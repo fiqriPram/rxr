@@ -26,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id" className={`dark ${plusJakartaSans.variable}`}>
+    <html lang="id" className={`dark ${plusJakartaSans.variable}`} data-scroll-behavior="smooth">
       <body className="min-h-screen flex flex-col bg-canvas text-slate-100 antialiased selection:bg-cyan-500 selection:text-white">
         <Navbar />
         <main className="flex-1">{children}</main>
