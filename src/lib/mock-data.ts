@@ -266,7 +266,7 @@ export const initialPaymentMethods: PaymentMethod[] = [
     feeFlat: 0,
     feePercentage: "0.70",
     iconUrl: "https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg",
-    accountNumber: "00020101021226580014ID.LINKAJA.WWW01189360091100000000005204581253033605802ID5910TOPY_STORE6007JAKARTA61051234062070703A016304",
+    accountNumber: "00020101021226580014ID.LINKAJA.WWW01189360091100000000005204581253033605802ID5910RXR_STORE6007JAKARTA61051234062070703A016304",
     instructions: [
       "Buka aplikasi E-Wallet (GoPay, DANA, OVO, ShopeePay) atau Mobile Banking favorit Anda.",
       "Pilih menu 'Scan' atau 'Bayar dengan QR'.",
@@ -306,7 +306,7 @@ export const initialPaymentMethods: PaymentMethod[] = [
     accountNumber: "081234567890",
     instructions: [
       "Buka aplikasi Gojek / GoPay.",
-      "Klik Bayar dan scan kode atau transfer ke merchant TOPY.",
+      "Klik Bayar dan scan kode atau transfer ke merchant RXR.",
       "Pastikan saldo mencukupi dan selesaikan pembayaran dengan PIN.",
     ],
     isActive: true,
@@ -377,7 +377,7 @@ export const initialPaymentMethods: PaymentMethod[] = [
     accountNumber: "ALFA-901823719",
     instructions: [
       "Kunjungi gerai Alfamart terdekat.",
-      "Sampaikan kepada kasir ingin melakukan pembayaran tagihan merchant 'TOPY'.",
+      "Sampaikan kepada kasir ingin melakukan pembayaran tagihan merchant 'RXR'.",
       "Tunjukkan kode pembayaran yang tertera pada invoice.",
       "Bayar sesuai nominal ke kasir dan simpan struk pembayaran.",
     ],
@@ -389,7 +389,7 @@ export const initialPaymentMethods: PaymentMethod[] = [
 export const initialPromoCodes: PromoCode[] = [
   {
     id: "promo-1",
-    code: "TOPYHEMAT",
+    code: "RXRHEMAT",
     discountType: "PERCENTAGE",
     discountValue: 10,
     maxDiscount: 15000,

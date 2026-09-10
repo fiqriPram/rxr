@@ -13,10 +13,10 @@ interface TopUpPageProps {
 export async function generateMetadata({ params }: TopUpPageProps) {
   const { slug } = await params;
   const game = await getGameBySlug(slug);
-  if (!game) return { title: "Game Tidak Ditemukan - TOPY" };
+  if (!game) return { title: "Game Tidak Ditemukan - RXR" };
 
   return {
-    title: `Top Up ${game.name} Murah & Cepat - TOPY`,
+    title: `Top Up ${game.name} Murah & Cepat - RXR`,
     description: `Beli diamond, voucher, atau item resmi ${game.name} dengan harga termurah, proses otomatis 1 detik, pembayaran QRIS, E-Wallet & Transfer Bank.`,
   };
 }

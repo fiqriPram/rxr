@@ -1,4 +1,4 @@
-# TOPY - Fullstack Game & Digital Voucher Top-Up Platform
+# RXR - Fullstack Game & Digital Voucher Top-Up Platform
 
 Website top-up game & voucher digital fullstack modern yang dibangun menggunakan **Next.js (App Router)**, **Bun**, **Neon Database (Serverless PostgreSQL)**, dan **Drizzle ORM**.
 
@@ -16,7 +16,7 @@ Website top-up game & voucher digital fullstack modern yang dibangun menggunakan
    - **Langkah 1**: Input Akun (User ID & Zone ID / Server) + **Fitur "Cek Nickname"** otomatis untuk memvalidasi nama gamer.
    - **Langkah 2**: Pemilihan Denominasi / Item (Diamond, Crystals, VP, UC, Membership) dengan tanda promo dan coret harga.
    - **Langkah 3**: Metode Pembayaran Lengkap (QRIS Realtime, E-Wallet [DANA, GoPay], Virtual Account [BCA, Mandiri, BRI], Minimarket [Alfamart]).
-   - **Langkah 4**: Kontak WhatsApp & Input Kode Promo Voucher (`TOPYHEMAT` diskon 10%, `NEONBARU` diskon flat).
+   - **Langkah 4**: Kontak WhatsApp & Input Kode Promo Voucher (`RXRHEMAT` diskon 10%, `NEONBARU` diskon flat).
    - **Langkah 5**: Modal konfirmasi rincian order & tombol beli responsif.
 3. **Faktur & Simulasi Pembayaran**:
    - Halaman detail invoice (`/order/[invoiceNumber]`) dengan kode QRIS dan nomor Virtual Account.
@@ -66,7 +66,7 @@ Isi `DATABASE_URL` dengan connection string database dari [Neon Console](https:/
 DATABASE_URL="postgresql://username:password@ep-cool-sample.us-east-2.aws.neon.tech/neondb?sslmode=require"
 ```
 
-> **Catatan:** TOPY dilengkapi dengan *in-memory & local fallback layer*. Jika `DATABASE_URL` belum diisi, aplikasi tetap dapat dijalankan 100% untuk demo dan pengujian lokal!
+> **Catatan:** RXR dilengkapi dengan *in-memory & local fallback layer*. Jika `DATABASE_URL` belum diisi, aplikasi tetap dapat dijalankan 100% untuk demo dan pengujian lokal!
 
 ### 4. Migrasi Skema & Seeder ke Neon PostgreSQL
 Jalankan perintah berikut untuk menerapkan skema tabel dan mengisi data awal game, item, metode pembayaran, serta promo:
@@ -130,6 +130,6 @@ topy/
 
 ## 🎟️ Kode Promo Bawaan untuk Uji Coba
 
-- `TOPYHEMAT`: Diskon 10% (maksimal Rp 15.000)
+- `RXRHEMAT`: Diskon 10% (maksimal Rp 15.000)
 - `NEONBARU`: Potongan langsung Rp 5.000 (minimal transaksi Rp 25.000)
 - `SULTANVIP`: Diskon 15% (maksimal Rp 30.000 untuk transaksi di atas Rp 100.000)

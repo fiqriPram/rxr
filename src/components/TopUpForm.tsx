@@ -501,7 +501,7 @@ export default function TopUpForm({ game, items, paymentMethods }: TopUpFormProp
                   type="text"
                   value={promoCodeInput}
                   onChange={(e) => setPromoCodeInput(e.target.value.toUpperCase())}
-                  placeholder="TOPYHEMAT"
+                  placeholder="RXRHEMAT"
                   className="w-full rounded-lg border border-line-2 bg-canvas-soft px-3 py-2 text-xs text-white placeholder-slate-500 uppercase focus:border-blue-500 font-mono"
                 />
                 <button

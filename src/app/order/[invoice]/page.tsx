@@ -11,7 +11,7 @@ interface OrderPageProps {
 export async function generateMetadata({ params }: OrderPageProps) {
   const { invoice } = await params;
   return {
-    title: `Invoice #${invoice} - TOPY Top-Up`,
+    title: `Invoice #${invoice} - RXR Top-Up`,
     description: `Detail dan instruksi pembayaran faktur ${invoice}`,
   };
 }
