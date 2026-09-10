@@ -16,7 +16,7 @@ export const initialGames: Game[] = [
       developer: "Moonton",
       description: "Top up Diamond Mobile Legends resmi, cepat, dan murah. Proses instan 1-3 detik langsung masuk ke akun Mobile Legends kamu.",
       thumbnailUrl: "/images/games/mlbb.png",
-      bannerUrl: "/images/games/mlbb.png",
+      bannerUrl: "/images/banner/mlbb.png",
       accountInputs: {
         userId: true,
         userLabel: "User ID",
@@ -39,7 +39,7 @@ export const initialGames: Game[] = [
       developer: "Garena",
       description: "Beli Diamond Free Fire murah & instan. Dukung push rank Booyah kamu sekarang juga tanpa ribet!",
       thumbnailUrl: "/images/games/ff.png",
-      bannerUrl: "/images/games/ff.png",
+      bannerUrl: "/images/banner/ff.png",
       accountInputs: {
         userId: true,
         userLabel: "Player ID",
@@ -59,7 +59,7 @@ export const initialGames: Game[] = [
       developer: "HoYoverse",
       description: "Top up Genesis Crystals & Blessing of the Welkin Moon resmi melalui HoYoverse UID. Instan dan aman 100%.",
       thumbnailUrl: "/images/games/genshin-impact.png",
-      bannerUrl: "/images/games/genshin-impact.png",
+      bannerUrl: "/images/banner/genshin-impact.png",
       accountInputs: {
         userId: true,
         userLabel: "UID Genshin Impact",
@@ -85,7 +85,7 @@ export const initialGames: Game[] = [
       developer: "Riot Games",
       description: "Beli Valorant Points (VP) resmi Riot Games Indonesia. Buka Skin Vandal & Phantom idamanmu sekarang!",
       thumbnailUrl: "/images/games/valorant.png",
-      bannerUrl: "/images/games/valorant.png",
+      bannerUrl: "/images/banner/valorant.png",
       accountInputs: {
         userId: true,
         userLabel: "Riot ID",
@@ -105,7 +105,7 @@ export const initialGames: Game[] = [
       developer: "Activision",
       description: "Top up CP (Call of Duty Points) resmi untuk Call of Duty Mobile. Dapatkan skin senjata, karakter, dan Battle Pass eksklusif.",
       thumbnailUrl: "/images/games/codm.png",
-      bannerUrl: "/images/games/codm.png",
+      bannerUrl: "/images/banner/codm.png",
       accountInputs: {
         userId: true,
         userLabel: "Player ID",
@@ -125,7 +125,7 @@ export const initialGames: Game[] = [
       developer: "Roblox Corporation",
       description: "Beli Robux resmi Roblox. Gunakan Robux untuk membeli item avatar, akses premium, dan fitur eksklusif di Roblox.",
       thumbnailUrl: "/images/games/roblox.png",
-      bannerUrl: "/images/games/steam.png",
+      bannerUrl: "/images/banner/steam.png",
       accountInputs: {
         userId: true,
         userLabel: "Username Roblox",
@@ -145,7 +145,7 @@ export const initialGames: Game[] = [
       developer: "Lilith Games",
       description: "Top up Crystals dan Diamond AFK Journey resmi dan instan.",
       thumbnailUrl: "/images/games/afk-journey.png",
-      bannerUrl: "/images/games/afk-journey.png",
+      bannerUrl: "/images/banner/afk-journey.png",
       accountInputs: { userId: true, userLabel: "UID", userPlaceholder: "Contoh: 123456", helperText: "UID AFK Journey Anda." },
       hasServerCheck: true,
       isPopular: true,
@@ -161,7 +161,7 @@ export const initialGames: Game[] = [
       developer: "Krafton",
       description: "Top up NC (New State Cash) PUBG New State resmi dan termurah.",
       thumbnailUrl: "/images/games/pubg-new-state.png",
-      bannerUrl: "/images/games/pubg-new-state.png",
+      bannerUrl: "/images/banner/pubg-new-state.png",
       accountInputs: { userId: true, userLabel: "Player ID", userPlaceholder: "Contoh: 987654321", helperText: "ID PUBG New State Anda." },
       hasServerCheck: true,
       isPopular: false,
@@ -176,7 +176,7 @@ export const initialGames: Game[] = [
       developer: "Tencent",
       description: "Top up Token Honor of Kings resmi dan instan.",
       thumbnailUrl: "/images/games/hok.png",
-      bannerUrl: "/images/games/hok.png",
+      bannerUrl: "/images/banner/hok.png",
       accountInputs: { userId: true, userLabel: "UID", userPlaceholder: "Contoh: 123456", helperText: "UID Honor of Kings." },
       hasServerCheck: true,
       isPopular: true,
@@ -190,8 +190,8 @@ export const initialGames: Game[] = [
       categoryId: "cat-mobile",
       developer: "Riot Games",
       description: "Top up Wild Cores Wild Rift resmi.",
-      thumbnailUrl: "/images/games/wild-drift.png",
-      bannerUrl: "/images/games/wild-drift.png",
+      thumbnailUrl: "/images/games/wild-rift.png",
+      bannerUrl: "/images/banner/wild-rift.png",
       accountInputs: { userId: true, userLabel: "Riot ID", userPlaceholder: "Contoh: Player#ID", helperText: "Masukkan Riot ID lengkap." },
       hasServerCheck: true,
       isPopular: false,
@@ -206,7 +206,7 @@ export const initialGames: Game[] = [
       developer: "HoYoverse",
       description: "Top up Crystals Honkai Star Rail resmi.",
       thumbnailUrl: "/images/games/hsr.png",
-      bannerUrl: "/images/games/hsr.png",
+      bannerUrl: "/images/banner/hsr.png",
       accountInputs: { userId: true, userLabel: "UID", userPlaceholder: "Contoh: 801234567", serverList: [{label:"Asia",value:"os_asia"}], helperText: "UID Honkai Star Rail." },
       hasServerCheck: true,
       isPopular: false,
@@ -221,7 +221,7 @@ export const initialGames: Game[] = [
       developer: "HoYoverse",
       description: "Top up Monochrome Zenless Zone Zero resmi.",
       thumbnailUrl: "/images/games/zzz.png",
-      bannerUrl: "/images/games/zzz.png",
+      bannerUrl: "/images/banner/zzz.png",
       accountInputs: { userId: true, userLabel: "UID", userPlaceholder: "Contoh: 801234567", serverList: [{label:"Asia",value:"os_asia"}], helperText: "UID ZZZ." },
       hasServerCheck: true,
       isPopular: false,
@@ -236,7 +236,7 @@ export const initialGames: Game[] = [
       developer: "Level Infinite",
       description: "Top up Delta Coins Delta Force resmi.",
       thumbnailUrl: "/images/games/delta-force.png",
-      bannerUrl: "/images/games/delta-force.png",
+      bannerUrl: "/images/banner/delta-force.png",
       accountInputs: { userId: true, userLabel: "Player ID", userPlaceholder: "Contoh: 987654321", helperText: "Player ID Delta Force." },
       hasServerCheck: true,
       isPopular: false,
@@ -251,7 +251,7 @@ export const initialGames: Game[] = [
       developer: "Level Infinite",
       description: "Top up UC PUBG Mobile resmi dan termurah. Buka Royale Pass dan upgrade skin senjata eksklusif.",
       thumbnailUrl: "/images/games/pubgm.png",
-      bannerUrl: "/images/games/pubgm.png",
+      bannerUrl: "/images/banner/pubgm.png",
       accountInputs: {
         userId: true,
         userLabel: "Player ID",
@@ -271,7 +271,7 @@ export const initialGames: Game[] = [
       developer: "Valve",
       description: "Beli Voucher Steam Wallet Rupiah resmi. Kode voucher langsung dikirimkan ke WhatsApp & Email kamu.",
       thumbnailUrl: "/images/games/steam.png",
-      bannerUrl: "/images/games/steam.png",
+      bannerUrl: "/images/banner/steam.png",
       accountInputs: {
         userId: true,
         userLabel: "Nomor WhatsApp / Akun",
@@ -333,6 +333,7 @@ export const initialItems: Item[] = [
   { id: "item-rob-1000", gameId: "game-roblox", name: "1,000 Robux", code: "ROB_1000", price: 149000, originalPrice: 168000, iconUrl: "https://shared.fastly.steamstatic.com/icon/roblox_1000_robux.png", isPromo: true, sortOrder: 3, isActive: true, createdAt: new Date() },
   { id: "item-rob-2200", gameId: "game-roblox", name: "2,200 Robux", code: "ROB_2200", price: 329000, originalPrice: 368000, iconUrl: "https://shared.fastly.steamstatic.com/icon/roblox_2200_robux.png", isPromo: false, sortOrder: 4, isActive: true, createdAt: new Date() },
 
+
   // Steam Wallet
   { id: "item-steam-45k", gameId: "game-steam", name: "Steam Wallet IDR 45.000", code: "STEAM_45K", price: 47500, originalPrice: 50000, iconUrl: "https://shared.fastly.steamstatic.com/icon/steam_wallet_45k.png", isPromo: false, sortOrder: 1, isActive: true, createdAt: new Date() },
   { id: "item-steam-90k", gameId: "game-steam", name: "Steam Wallet IDR 90.000", code: "STEAM_90K", price: 94000, originalPrice: 100000, iconUrl: "https://shared.fastly.steamstatic.com/icon/steam_wallet_90k.png", isPromo: false, sortOrder: 2, isActive: true, createdAt: new Date() },
@@ -340,25 +341,6 @@ export const initialItems: Item[] = [
 ];
 
 export const initialPaymentMethods: PaymentMethod[] = [
-  {
-    id: "pay-qris",
-    code: "QRIS",
-    name: "QRIS Realtime (Semua E-Wallet & M-Banking)",
-    type: "QRIS",
-    feeFlat: 0,
-    feePercentage: "0.70",
-    iconUrl: "https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg",
-    accountNumber: "00020101021226580014ID.LINKAJA.WWW01189360091100000000005204581253033605802ID5910RXR_STORE6007JAKARTA61051234062070703A016304",
-    instructions: [
-      "Buka aplikasi E-Wallet (GoPay, DANA, OVO, ShopeePay) atau Mobile Banking favorit Anda.",
-      "Pilih menu 'Scan' atau 'Bayar dengan QR'.",
-      "Arahkan kamera ke Kode QRIS di halaman pembayaran.",
-      "Periksa nominal pembayaran dan selesaikan transaksi dengan memasukkan PIN.",
-      "Pembayaran akan terverifikasi otomatis dalam 1-5 detik.",
-    ],
-    isActive: true,
-    createdAt: new Date(),
-  },
   {
     id: "pay-dana",
     code: "DANA",
@@ -578,4 +560,3 @@ export class MemoryStore {
     }
   }
 }
-

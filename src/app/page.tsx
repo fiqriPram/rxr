@@ -39,14 +39,14 @@ export default async function HomePage() {
 
   // Official artwork mapping for reliable game images
   const artworkMap: Record<string, string> = {
-    "mobile-legends": "https://wacdn.mlbb.com/image/1511512578-dfb367046420_mobile-legends-bang-bang.jpg",
-    "free-fire": "https://d1j1u4tjg8uq8g.cloudfront.net/banner-free-fire.jpg",
-    "genshin-impact": "https://webstatic.mihoyo.com/banner/Genshin_Impact_Thumbnail.jpg",
-    "valorant": "https://media.valorantpoint.com/banner/valorant-hero.jpg",
-    "pubg-mobile": "https://static.pubg.com/banner/pubg-mobile-hero.jpg",
-    "steam-wallet": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/753/hero.jpg",
-    "call-of-duty-mobile": "https://media.valorantpoint.com/banner/codm-hero.jpg",
-    "roblox": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/753/hero.jpg",
+    "mobile-legends": "/images/banner/mlbb.png",
+    "free-fire": "/images/banner/ff.png",
+    "genshin-impact": "/images/banner/genshin-impact.png",
+    "valorant": "/images/banner/valorant.png",
+    "pubg-mobile": "/images/banner/pubgm.png",
+    "steam-wallet": "/images/banner/steam.png",
+    "call-of-duty-mobile": "/images/banner/codm.png",
+    "roblox": "/images/banner/roblox.png",
   };
 
   const heroSlides: HeroSlide[] = featured.map((game, i) => {
