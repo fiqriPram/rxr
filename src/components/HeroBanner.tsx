@@ -82,9 +82,7 @@ export default function HeroBanner({ slides }: HeroBannerProps) {
                 ) : (
                   <div className="h-full w-full bg-[radial-gradient(45rem_30rem_at_85%_-5%,rgba(34,211,238,0.22),transparent_55%),radial-gradient(32rem_26rem_at_5%_125%,rgba(245,158,11,0.14),transparent_55%),linear-gradient(135deg,#0b1121,#070b16)]">
                     <div className="absolute right-6 top-1/2 -translate-y-1/2 select-none">
-                      <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-600 text-4xl font-black text-white shadow-[0_8px_30px_-8px_rgba(59,130,246,0.6)]">
-                        R
-                      </div>
+                      <img src="/images/rxr.webp" alt="RXR" className="h-20 w-20 select-none rounded-2xl shadow-[0_8px_30px_-8px_rgba(59,130,246,0.6)]" />
                     </div>
                   </div>
                 )}
