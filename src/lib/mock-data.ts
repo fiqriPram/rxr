@@ -315,6 +315,11 @@ export const initialItems: Item[] = [
   { id: "item-val-2050", gameId: "game-valorant", name: "2050 Valorant Points", code: "VAL_2050", price: 215000, originalPrice: 240000, iconUrl: "https://media.valorantpoint.com/icon/valorant_points_2050.png", isPromo: false, sortOrder: 3, isActive: true, createdAt: new Date() },
   { id: "item-val-3650", gameId: "game-valorant", name: "3650 Valorant Points", code: "VAL_3650", price: 375000, originalPrice: 420000, iconUrl: "https://media.valorantpoint.com/icon/valorant_points_3650.png", isPromo: false, sortOrder: 4, isActive: true, createdAt: new Date() },
 
+  // Wild Rift
+  { id: "item-lol-100", gameId: "game-lol-wr", name: "100 Wild Cores", code: "LOL_100", price: 25000, originalPrice: 28000, iconUrl: "https://media.valorantpoint.com/icon/wild_cores_100.png", isPromo: false, sortOrder: 1, isActive: true, createdAt: new Date() },
+  { id: "item-lol-500", gameId: "game-lol-wr", name: "500 Wild Cores", code: "LOL_500", price: 115000, originalPrice: 130000, iconUrl: "https://media.valorantpoint.com/icon/wild_cores_500.png", isPromo: false, sortOrder: 2, isActive: true, createdAt: new Date() },
+  { id: "item-lol-1000", gameId: "game-lol-wr", name: "1,000 Wild Cores", code: "LOL_1000", price: 220000, originalPrice: 240000, iconUrl: "https://media.valorantpoint.com/icon/wild_cores_1000.png", isPromo: true, sortOrder: 3, isActive: true, createdAt: new Date() },
+
   // PUBG Mobile
   { id: "item-pubg-60", gameId: "game-pubgm", name: "60 UC", code: "PUBG_60", price: 14000, originalPrice: 16000, iconUrl: "https://static.pubg.com/icon/pubg_uc_60.png", isPromo: false, sortOrder: 1, isActive: true, createdAt: new Date() },
   { id: "item-pubg-325", gameId: "game-pubgm", name: "325 UC", code: "PUBG_325", price: 69000, originalPrice: 77000, iconUrl: "https://static.pubg.com/icon/pubg_uc_325.png", isPromo: true, sortOrder: 2, isActive: true, createdAt: new Date() },
@@ -333,6 +338,26 @@ export const initialItems: Item[] = [
   { id: "item-rob-1000", gameId: "game-roblox", name: "1,000 Robux", code: "ROB_1000", price: 149000, originalPrice: 168000, iconUrl: "https://shared.fastly.steamstatic.com/icon/roblox_1000_robux.png", isPromo: true, sortOrder: 3, isActive: true, createdAt: new Date() },
   { id: "item-rob-2200", gameId: "game-roblox", name: "2,200 Robux", code: "ROB_2200", price: 329000, originalPrice: 368000, iconUrl: "https://shared.fastly.steamstatic.com/icon/roblox_2200_robux.png", isPromo: false, sortOrder: 4, isActive: true, createdAt: new Date() },
 
+
+  // PUBG New State
+  { id: "item-pubg_ns_60", gameId: "game-pubg-ns", name: "PUBG NS 60 UC", code: "PUBG_NS_60", price: 14000, originalPrice: null, iconUrl: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/753/header.jpg", isPromo: false, sortOrder: 1, isActive: true, createdAt: new Date() },
+  { id: "item-pubg_ns_325", gameId: "game-pubg-ns", name: "PUBG NS 325 UC", code: "PUBG_NS_325", price: 69000, originalPrice: null, iconUrl: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/753/header.jpg", isPromo: true, sortOrder: 2, isActive: true, createdAt: new Date() },
+  { id: "item-pubg_ns_660", gameId: "game-pubg-ns", name: "PUBG NS 660 UC", code: "PUBG_NS_660", price: 139000, originalPrice: null, iconUrl: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/753/header.jpg", isPromo: false, sortOrder: 3, isActive: true, createdAt: new Date() },
+  // Honor of Kings
+  { id: "item-hok_100", gameId: "game-hok", name: "Honor of Kings 100 Token", code: "HOK_100", price: 15000, originalPrice: null, iconUrl: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/753/header.jpg", isPromo: false, sortOrder: 1, isActive: true, createdAt: new Date() },
+  { id: "item-hok_500", gameId: "game-hok", name: "Honor of Kings 500 Token", code: "HOK_500", price: 72000, originalPrice: null, iconUrl: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/753/header.jpg", isPromo: false, sortOrder: 2, isActive: true, createdAt: new Date() },
+  // Honkai Star Rail
+  { id: "item-hsr_60", gameId: "game-honkai", name: "Honkai Star Rail 60 Crystals", code: "HSR_60", price: 15500, originalPrice: null, iconUrl: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/753/header.jpg", isPromo: false, sortOrder: 1, isActive: true, createdAt: new Date() },
+  { id: "item-hsr_300", gameId: "game-honkai", name: "Honkai Star Rail 300 Crystals", code: "HSR_300", price: 74000, originalPrice: null, iconUrl: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/753/header.jpg", isPromo: false, sortOrder: 2, isActive: true, createdAt: new Date() },
+  // Zenless Zone Zero
+  { id: "item-zzz_60", gameId: "game-zenless", name: "Zenless Zone Zero 60 Crystals", code: "ZZZ_60", price: 15500, originalPrice: null, iconUrl: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/753/header.jpg", isPromo: false, sortOrder: 1, isActive: true, createdAt: new Date() },
+  { id: "item-zzz_300", gameId: "game-zenless", name: "Zenless Zone Zero 300 Crystals", code: "ZZZ_300", price: 74000, originalPrice: null, iconUrl: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/753/header.jpg", isPromo: false, sortOrder: 2, isActive: true, createdAt: new Date() },
+  // Delta Force
+  { id: "item-delta_100", gameId: "game-delta", name: "Delta Force 100 Coins", code: "DELTA_100", price: 15000, originalPrice: null, iconUrl: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/753/header.jpg", isPromo: false, sortOrder: 1, isActive: true, createdAt: new Date() },
+  { id: "item-delta_500", gameId: "game-delta", name: "Delta Force 500 Coins", code: "DELTA_500", price: 72000, originalPrice: null, iconUrl: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/753/header.jpg", isPromo: false, sortOrder: 2, isActive: true, createdAt: new Date() },
+  // AFK Journey
+  { id: "item-afk_60", gameId: "game-afk-journey", name: "AFK Journey 60 Crystals", code: "AFK_60", price: 15500, originalPrice: null, iconUrl: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/753/header.jpg", isPromo: false, sortOrder: 1, isActive: true, createdAt: new Date() },
+  { id: "item-afk_300", gameId: "game-afk-journey", name: "AFK Journey 300 Crystals", code: "AFK_300", price: 74000, originalPrice: null, iconUrl: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/753/header.jpg", isPromo: false, sortOrder: 2, isActive: true, createdAt: new Date() },
 
   // Steam Wallet
   { id: "item-steam-45k", gameId: "game-steam", name: "Steam Wallet IDR 45.000", code: "STEAM_45K", price: 47500, originalPrice: 50000, iconUrl: "https://shared.fastly.steamstatic.com/icon/steam_wallet_45k.png", isPromo: false, sortOrder: 1, isActive: true, createdAt: new Date() },
