@@ -47,7 +47,6 @@ export default async function HomePage() {
     "steam-wallet": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/753/hero.jpg",
     "call-of-duty-mobile": "https://media.valorantpoint.com/banner/codm-hero.jpg",
     "roblox": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/753/hero.jpg",
-    "minecraft": "https://wacdn.mlbb.com/image/minecraft_banner.jpg",
   };
 
   const heroSlides: HeroSlide[] = featured.map((game, i) => {
