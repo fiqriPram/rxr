@@ -31,6 +31,7 @@ export const VIPAYMENT_NICKNAME_CODE: Record<string, string> = {
   "genshin-impact": "genshin-impact",
   "valorant": "valorant",
   "pubg-mobile": "pubgm",
+  "afk-journey": "afk-journey",
 };
 
 // App game slug -> nama game utk filter services (diurutkan prioritas)
@@ -40,6 +41,7 @@ export const VIPAYMENT_GAME_NAMES: Record<string, string[]> = {
   "genshin-impact": ["Genshin Impact"],
   "valorant": ["Valorant"],
   "pubg-mobile": ["PUBG Mobile (ID)", "PUBGM INDO A"],
+  "afk-journey": ["AFK Journey"],
   "steam-wallet": ["Steam Wallet Code"],
 };
 
