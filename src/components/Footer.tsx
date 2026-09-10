@@ -18,7 +18,7 @@ export default function Footer() {
           {/* Brand Col */}
           <div className="md:col-span-2 space-y-3">
             <Link href="/" className="flex items-center gap-2">
-              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white font-black text-sm">
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-600 text-white font-black text-sm shadow-[0_4px_14px_-4px_rgba(34,211,238,0.5)]">
                 R
               </div>
               <span className="text-lg font-black text-white">RXR.</span>

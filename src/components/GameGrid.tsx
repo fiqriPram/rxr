@@ -44,10 +44,10 @@ export default function GameGrid({ games, categories }: GameGridProps) {
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
           <button
             onClick={() => setSelectedCategory("all")}
-            className={`rounded-lg px-3 py-1.5 font-semibold transition whitespace-nowrap ${
+            className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all whitespace-nowrap shadow-sm ${
               selectedCategory === "all"
-                ? "bg-blue-600 text-white shadow-[0_4px_14px_-6px_rgba(59,130,246,0.7)]"
-                : "bg-field text-slate-400 hover:text-white border border-line-2"
+                ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-[0_4px_16px_-6px_rgba(34,211,238,0.6)] scale-105"
+                : "bg-panel-2/60 text-slate-300 hover:text-white hover:bg-panel-3 border border-line/40 hover:border-cyan-400/20"
             }`}
           >
             Semua Game ({games.length})
@@ -100,8 +100,8 @@ export default function GameGrid({ games, categories }: GameGridProps) {
           ))}
         </div>
       ) : (
-        <div className="rounded-xl border border-line bg-panel-2 p-8 text-center">
-          <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-lg bg-panel-3 text-slate-400">
+        <div className="rounded-2xl border border-line/50 bg-gradient-to-b from-panel/40 to-canvas-soft/30 backdrop-blur-sm p-10 text-center shadow-inner shadow-black/10">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-panel-3 to-panel-2 text-slate-300 shadow-lg shadow-black/20 ring-1 ring-white/5">
             <Gamepad2 className="h-5 w-5" />
           </div>
           <h4 className="mt-3 text-sm font-bold text-white">Tidak ada game yang cocok</h4>

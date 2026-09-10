@@ -12,23 +12,16 @@ export default function GameCard({ game }: GameCardProps) {
   return (
     <Link
       href={`/topup/${game.slug}`}
-      className="card-hover group flex flex-col overflow-hidden rounded-xl border border-line bg-panel hover:border-line-strong hover:bg-panel-3 hover:shadow-[0_14px_36px_-18px_rgba(59,130,246,0.5)] hover:-translate-y-0.5"
+      className="card-hover group flex flex-col overflow-hidden rounded-2xl border border-line/60 bg-gradient-to-b from-panel/80 to-canvas-soft/60 hover:border-cyan-400/30 hover:bg-gradient-to-b hover:from-panel hover:to-panel-2 hover:shadow-[0_20px_50px_-20px_rgba(34,211,238,0.35)] hover:-translate-y-1 transition-all duration-300"
     >
       {/* Game Thumbnail */}
       <div className="relative aspect-[3/4] w-full overflow-hidden bg-canvas-soft">
-        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-panel-3 to-canvas-soft">
-          <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500/70 to-indigo-600/70 text-2xl font-black text-white">
-            {game.name.charAt(0)}
-          </div>
-        </div>
+        <div className="absolute inset-0 bg-gradient-to-br from-panel-3 to-canvas-soft z-0"></div>
         <img
           src={game.thumbnailUrl}
           alt={game.name}
-          className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          className="absolute inset-2 h-[calc(100%-1rem)] w-[calc(100%-1rem)] object-contain transition-transform duration-300 group-hover:scale-105 z-10 p-2"
           loading="lazy"
-          onError={(e) => {
-            e.currentTarget.style.display = "none";
-          }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-panel via-transparent to-transparent opacity-90" />
 

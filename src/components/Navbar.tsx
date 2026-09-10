@@ -31,7 +31,7 @@ export default function Navbar() {
         {/* Left: Brand Wordmark */}
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white font-black text-lg shadow-[0_6px_18px_-6px_rgba(59,130,246,0.8)] transition-transform group-hover:-rotate-6 group-hover:scale-105">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-600 text-white font-black text-lg shadow-[0_6px_18px_-6px_rgba(34,211,238,0.7)] transition-transform group-hover:-rotate-6 group-hover:scale-105">
               R
             </div>
             <div className="flex flex-col">

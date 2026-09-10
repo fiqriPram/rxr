@@ -4,7 +4,7 @@ import * as dotenv from "dotenv";
 import * as schema from "./schema";
 import { initialCategories, initialGames, initialItems, initialPaymentMethods, initialPromoCodes } from "../lib/mock-data";
 
-dotenv.config({ path: ".env.local" });
+dotenv.config({ path: ".env" });
 dotenv.config();
 
 const connectionString = process.env.DATABASE_URL;
