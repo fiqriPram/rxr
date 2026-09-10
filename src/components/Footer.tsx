@@ -96,8 +96,8 @@ export default function Footer() {
         <div className="border-t border-line-soft pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-400">
           <p>© {new Date().getFullYear()} RXR. Seluruh hak cipta dilindungi undang-undang.</p>
           <div className="flex gap-4 mt-2 sm:mt-0">
-            <span className="hover:text-slate-200 cursor-pointer">Syarat & Ketentuan</span>
-            <span className="hover:text-slate-200 cursor-pointer">Kebijakan Privasi</span>
+            <Link href="/syarat-ketentuan" className="hover:text-slate-200 transition">Syarat & Ketentuan</Link>
+            <Link href="/kebijakan-privasi" className="hover:text-slate-200 transition">Kebijakan Privasi</Link>
           </div>
         </div>
       </div>
