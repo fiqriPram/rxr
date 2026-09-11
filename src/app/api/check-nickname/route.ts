@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
         // Error ID tidak valid -> tetap 400.
         const providerMsg = result.message || "";
         const isProviderIssue =
-          /tidak diizinkan|not allowed|blokir|block|invalid.*key|unauthor|maintenance|server|timeout|network|fetch failed/i.test(
+          /tidak diizinkan|not allowed|ip[^a-z]*blokir|blokir|invalid.*(key|sign)|unauthor|maintenance|timeout|network|fetch failed|econn|socket hang up|50[023]/i.test(
             providerMsg
           );
         if (!isProviderIssue) {
