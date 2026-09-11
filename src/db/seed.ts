@@ -31,29 +31,22 @@ async function seed() {
     await db.delete(schema.promoCodes);
 
     console.log("📦 Memasukkan Kategori...");
-    for (const cat of initialCategories) {
-      await db.insert(schema.categories).values(cat).onConflictDoNothing();
-    }
+    await db.insert(schema.categories).values(initialCategories).onConflictDoNothing();
 
     console.log("🎮 Memasukkan Game...");
-    for (const game of initialGames) {
-      await db.insert(schema.games).values(game).onConflictDoNothing();
-    }
+    await db.insert(schema.games).values(initialGames).onConflictDoNothing();
 
     console.log("💎 Memasukkan Item & Denominasi...");
-    for (const item of initialItems) {
-      await db.insert(schema.items).values(item).onConflictDoNothing();
+    const itemChunk = 200;
+    for (let i = 0; i < initialItems.length; i += itemChunk) {
+      await db.insert(schema.items).values(initialItems.slice(i, i + itemChunk)).onConflictDoNothing();
     }
 
     console.log("💳 Memasukkan Metode Pembayaran...");
-    for (const pm of initialPaymentMethods) {
-      await db.insert(schema.paymentMethods).values(pm).onConflictDoNothing();
-    }
+    await db.insert(schema.paymentMethods).values(initialPaymentMethods).onConflictDoNothing();
 
     console.log("🎟️ Memasukkan Kode Promo...");
-    for (const promo of initialPromoCodes) {
-      await db.insert(schema.promoCodes).values(promo).onConflictDoNothing();
-    }
+    await db.insert(schema.promoCodes).values(initialPromoCodes).onConflictDoNothing();
 
     console.log("✅ Seeding Neon Database berhasil 100%!");
   } catch (error) {
