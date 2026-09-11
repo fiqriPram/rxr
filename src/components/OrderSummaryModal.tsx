@@ -42,8 +42,8 @@ export default function OrderSummaryModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm">
       <div className="relative w-full max-w-md overflow-hidden rounded-xl border border-line-2 bg-field-2 shadow-2xl">
-        {/* Gradient accent strip */}
-        <div className="h-1 w-full bg-gradient-to-r from-blue-500 via-indigo-500 to-transparent" />
+        {/* Accent strip */}
+        <div className="h-1 w-full bg-blue-600" />
         {/* Header */}
         <div className="flex items-center justify-between border-b border-line-soft px-5 pb-3 pt-4">
           <h3 className="text-base font-bold text-white">Detail Pesanan</h3>

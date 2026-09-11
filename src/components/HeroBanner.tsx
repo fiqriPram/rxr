@@ -21,19 +21,19 @@ interface HeroBannerProps {
 }
 
 const tintOverlay: Record<HeroSlide["tint"], string> = {
-  blue: "from-blue-600/55 via-blue-950/35 to-canvas",
-  indigo: "from-indigo-500/55 via-indigo-950/35 to-canvas",
-  emerald: "from-emerald-500/50 via-emerald-950/35 to-canvas",
-  rose: "from-rose-500/50 via-rose-950/30 to-canvas",
-  amber: "from-amber-500/45 via-amber-950/30 to-canvas",
+  blue: "from-black/70 via-black/30 to-transparent",
+  indigo: "from-black/70 via-black/30 to-transparent",
+  emerald: "from-black/70 via-black/30 to-transparent",
+  rose: "from-black/70 via-black/30 to-transparent",
+  amber: "from-black/70 via-black/30 to-transparent",
 };
 
 const tintBadge: Record<HeroSlide["tint"], string> = {
-  blue: "bg-blue-500",
-  indigo: "bg-indigo-500",
-  emerald: "bg-emerald-500",
-  rose: "bg-rose-500",
-  amber: "bg-amber-500",
+  blue: "bg-blue-600",
+  indigo: "bg-indigo-600",
+  emerald: "bg-emerald-600",
+  rose: "bg-rose-600",
+  amber: "bg-amber-600",
 };
 
 export default function HeroBanner({ slides }: HeroBannerProps) {
@@ -54,7 +54,7 @@ export default function HeroBanner({ slides }: HeroBannerProps) {
     <div className="space-y-3">
       {/* Main Banner Slider */}
       <div
-        className="relative h-[240px] sm:h-[300px] lg:h-[340px] overflow-hidden rounded-xl border border-line bg-panel shadow-lg"
+        className="relative h-[240px] sm:h-[300px] lg:h-[340px] overflow-hidden rounded-xl border border-line bg-panel"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
       >

@@ -87,7 +87,7 @@ export default async function HomePage() {
 
       {/* Promo Voucher Strip */}
       <section id="promo-section" className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="rounded-xl border border-line bg-panel p-4">
+        <div className="rounded-xl border border-amber-500/25 bg-amber-500/5 p-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <div className="text-xs font-bold text-white uppercase tracking-wider">
@@ -99,15 +99,15 @@ export default async function HomePage() {
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-              <div className="flex items-center gap-2 rounded-lg bg-canvas-soft border border-line-2 px-3 py-1.5 text-xs">
+              <div className="flex items-center gap-2 rounded-lg bg-panel border border-line px-3 py-1.5 text-xs">
                 <Tag className="h-3.5 w-3.5 text-amber-400" />
                 <span className="font-mono font-bold text-white">RXRHEMAT</span>
-                <span className="text-emerald-400 font-semibold">(Diskon 10%)</span>
+                <span className="text-emerald-400 font-semibold">-10%</span>
               </div>
-              <div className="flex items-center gap-2 rounded-lg bg-canvas-soft border border-line-2 px-3 py-1.5 text-xs">
-                <Tag className="h-3.5 w-3.5 text-blue-400" />
+              <div className="flex items-center gap-2 rounded-lg bg-panel border border-line px-3 py-1.5 text-xs">
+                <Tag className="h-3.5 w-3.5 text-amber-400" />
                 <span className="font-mono font-bold text-white">NEONBARU</span>
-                <span className="text-emerald-400 font-semibold">(Diskon Rp 5.000)</span>
+                <span className="text-emerald-400 font-semibold">-Rp5rb</span>
               </div>
             </div>
           </div>
@@ -122,11 +122,14 @@ export default async function HomePage() {
       </section>
 
       {/* Service Guarantees */}
-      <section className="border-t border-line-soft bg-canvas-soft py-10">
+      <section className="border-t border-line-soft py-10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="card-hover flex items-start gap-3 rounded-lg border border-line bg-panel-2 p-3.5">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-600/10 text-blue-400 border border-blue-500/20">
+          <h3 className="mb-4 text-base font-bold text-white text-center">
+            Kenapa Top Up di RXR?
+          </h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="flex items-start gap-3 rounded-xl border border-line bg-panel p-4">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-600 text-white">
                 <Zap className="h-4 w-4" />
               </div>
               <div>
@@ -135,8 +138,8 @@ export default async function HomePage() {
               </div>
             </div>
 
-            <div className="card-hover flex items-start gap-3 rounded-lg border border-line bg-panel-2 p-3.5">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-600/10 text-emerald-400 border border-emerald-500/20">
+            <div className="flex items-start gap-3 rounded-xl border border-line bg-panel p-4">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-600 text-white">
                 <ShieldCheck className="h-4 w-4" />
               </div>
               <div>
@@ -145,8 +148,8 @@ export default async function HomePage() {
               </div>
             </div>
 
-            <div className="card-hover flex items-start gap-3 rounded-lg border border-line bg-panel-2 p-3.5">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-600/10 text-amber-400 border border-amber-500/20">
+            <div className="flex items-start gap-3 rounded-xl border border-line bg-panel p-4">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-600 text-white">
                 <CreditCard className="h-4 w-4" />
               </div>
               <div>
@@ -155,8 +158,8 @@ export default async function HomePage() {
               </div>
             </div>
 
-            <div className="card-hover flex items-start gap-3 rounded-lg border border-line bg-panel-2 p-3.5">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-indigo-600/10 text-indigo-400 border border-indigo-500/20">
+            <div className="flex items-start gap-3 rounded-xl border border-line bg-panel p-4">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-600 text-white">
                 <Headphones className="h-4 w-4" />
               </div>
               <div>
@@ -170,19 +173,19 @@ export default async function HomePage() {
 
       {/* FAQ */}
       <section className="mx-auto max-w-4xl px-4 sm:px-6 space-y-3">
-        <h3 className="text-sm font-bold uppercase tracking-wider text-slate-300 text-center">
-          Pertanyaan Umum (FAQ)
+        <h3 className="text-base font-bold text-white text-center">
+          Pertanyaan Umum
         </h3>
 
         <div className="space-y-2 text-xs">
-          <div className="card-hover rounded-lg border border-line bg-panel p-3.5">
+          <div className="rounded-xl border border-line bg-panel p-4">
             <span className="font-bold text-white">Berapa lama proses pengisian top-up?</span>
             <p className="text-slate-400 mt-1 leading-relaxed">
               Setelah pembayaran selesai dan terverifikasi oleh sistem, diamond/voucher akan masuk secara otomatis dalam kurun waktu 1 hingga 3 detik.
             </p>
           </div>
 
-          <div className="card-hover rounded-lg border border-line bg-panel p-3.5">
+          <div className="rounded-xl border border-line bg-panel p-4">
             <span className="font-bold text-white">Apakah diamond dan voucher ini legal?</span>
             <p className="text-slate-400 mt-1 leading-relaxed">
               Semua produk di RXR diisi melalui jalur API distributor resmi publisher game terkait sehingga dijamin 100% legal dan aman dari banned.

@@ -26,15 +26,15 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-line-soft bg-canvas-soft/95 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-line-soft bg-canvas">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
         {/* Left: Brand Wordmark */}
         <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-2 group">
-            <img src="/images/rxr.webp" alt="RXR" className="h-9 w-9 rounded-lg transition-transform group-hover:-rotate-6 group-hover:scale-105" />
+          <Link href="/" className="flex items-center gap-2">
+            <img src="/images/rxr.webp" alt="RXR" className="h-9 w-9 rounded-lg" />
             <div className="flex flex-col">
               <span className="text-xl font-extrabold tracking-tight text-white leading-none">
-                RXR<span className="text-amber-400">.</span>
+                RXR
               </span>
               <span className="text-[10px] font-semibold text-slate-400 tracking-wider uppercase">
                 Game Top-Up

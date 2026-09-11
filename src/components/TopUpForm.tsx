@@ -224,7 +224,7 @@ export default function TopUpForm({ game, items, paymentMethods }: TopUpFormProp
       {/* Step 1: Data Akun */}
       <div className="rounded-xl border border-line bg-panel p-4 sm:p-6 shadow-sm">
         <div className="flex items-center gap-3 border-b border-line-soft pb-3">
-          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-600 text-xs font-bold text-white shadow-[0_4px_16px_-6px_rgba(34,211,238,0.7)]">
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white">
             1
           </span>
           <h3 className="text-sm sm:text-base font-bold text-white">
@@ -335,7 +335,7 @@ export default function TopUpForm({ game, items, paymentMethods }: TopUpFormProp
       {/* Step 2: Pilih Nominal */}
       <div className="rounded-xl border border-line bg-panel p-4 sm:p-6 shadow-sm">
         <div className="flex items-center gap-3 border-b border-line-soft pb-3">
-          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-600 text-xs font-bold text-white shadow-[0_4px_16px_-6px_rgba(34,211,238,0.7)]">
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white">
             2
           </span>
           <h3 className="text-sm sm:text-base font-bold text-white">
@@ -351,10 +351,10 @@ export default function TopUpForm({ game, items, paymentMethods }: TopUpFormProp
                 key={item.id}
                 type="button"
                 onClick={() => setSelectedItem(item)}
-                className={`relative flex flex-col justify-between rounded-lg p-3 text-left transition-all card-hover ${
+                className={`relative flex flex-col justify-between rounded-xl p-3 text-left transition border-2 ${
                   isSelected
-                    ? "border-2 border-cyan-400/50 bg-gradient-to-b from-blue-950/60 to-canvas-soft shadow-[0_0_0_1px_rgba(34,211,238,0.25),0_16px_40px_-20px_rgba(34,211,238,0.5)]"
-                    : "border border-line/50 bg-gradient-to-b from-panel/60 to-canvas-soft/40 hover:border-cyan-400/20 hover:shadow-lg"
+                    ? "border-blue-500 bg-blue-950/30"
+                    : "border-line bg-panel hover:border-line-strong"
                 }`}
               >
                 {/* Active check icon */}
@@ -364,24 +364,26 @@ export default function TopUpForm({ game, items, paymentMethods }: TopUpFormProp
                   </div>
                 )}
 
-                {item.isPromo && (
-                  <span className="self-start rounded bg-rose-600 px-1.5 py-0.2 text-[9px] font-bold text-white uppercase mb-1.5">
-                    Diskon
-                  </span>
-                )}
-
                 <div className="pr-4">
                   <div className="text-xs sm:text-sm font-semibold text-white line-clamp-2">
                     {item.name}
                   </div>
                 </div>
 
-                <div className="mt-3 pt-2 border-t border-line-soft flex items-baseline justify-between">
-                  <div className="text-xs font-bold text-amber-400">
+                {(item.isPromo || (item.originalPrice && item.originalPrice > item.price)) && (
+                  <span className="mt-1.5 self-start rounded bg-rose-600 px-1.5 py-0.5 text-[9px] font-bold text-white uppercase">
+                    {item.originalPrice && item.originalPrice > item.price
+                      ? `Disc ${Math.round(((item.originalPrice - item.price) / item.originalPrice) * 100)}%`
+                      : "Diskon"}
+                  </span>
+                )}
+
+                <div className="mt-2 pt-2 border-t border-line-soft flex items-baseline justify-between gap-1">
+                  <div className="text-xs sm:text-sm font-bold text-white">
                     {formatRupiah(item.price)}
                   </div>
                   {item.originalPrice && (
-                    <div className="text-[10px] text-slate-400 line-through">
+                    <div className="text-[10px] text-slate-500 line-through">
                       {formatRupiah(item.originalPrice)}
                     </div>
                   )}
@@ -395,7 +397,7 @@ export default function TopUpForm({ game, items, paymentMethods }: TopUpFormProp
       {/* Step 3: Pilih Pembayaran */}
       <div className="rounded-xl border border-line bg-panel p-4 sm:p-6 shadow-sm">
         <div className="flex items-center gap-3 border-b border-line-soft pb-3">
-          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-600 text-xs font-bold text-white shadow-[0_4px_16px_-6px_rgba(34,211,238,0.7)]">
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white">
             3
           </span>
           <h3 className="text-sm sm:text-base font-bold text-white">
@@ -425,10 +427,10 @@ export default function TopUpForm({ game, items, paymentMethods }: TopUpFormProp
                       key={payment.id}
                       type="button"
                       onClick={() => setSelectedPayment(payment)}
-                      className={`flex items-center justify-between rounded-lg p-2.5 text-left transition-all card-hover ${
+                      className={`flex items-center justify-between rounded-xl p-2.5 text-left transition border-2 ${
                         isSelected
-                          ? "border-2 border-blue-400 bg-blue-950/40 shadow-[0_0_0_1px_rgba(59,130,246,0.25),0_12px_30px_-18px_rgba(59,130,246,0.7)]"
-                          : "border border-line bg-canvas-soft hover:border-line-strong"
+                          ? "border-blue-500 bg-blue-950/30"
+                          : "border-line bg-panel hover:border-line-strong"
                       }`}
                     >
                       <div className="flex items-center gap-2.5">
@@ -466,7 +468,7 @@ export default function TopUpForm({ game, items, paymentMethods }: TopUpFormProp
       {/* Step 4: Kontak & Promo */}
       <div className="rounded-xl border border-line bg-panel p-4 sm:p-6 shadow-sm">
         <div className="flex items-center gap-3 border-b border-line-soft pb-3">
-          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-600 text-xs font-bold text-white shadow-[0_4px_16px_-6px_rgba(34,211,238,0.7)]">
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white">
             4
           </span>
           <h3 className="text-sm sm:text-base font-bold text-white">
@@ -528,7 +530,7 @@ export default function TopUpForm({ game, items, paymentMethods }: TopUpFormProp
       </div>
 
       {/* Sticky Bottom Bar */}
-      <div className="sticky bottom-3 z-40 rounded-2xl border border-cyan-400/10 bg-canvas-soft/90 p-4 sm:p-5 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6),0_0_40px_-12px_rgba(34,211,238,0.15)] backdrop-blur-xl ring-1 ring-white/5">
+      <div className="sticky bottom-3 z-40 rounded-2xl border border-line bg-panel p-4 sm:p-5">
         <div className="flex items-center justify-between gap-4">
           <div>
             <div className="text-[11px] text-slate-400">Total Tagihan:</div>
@@ -551,7 +553,7 @@ export default function TopUpForm({ game, items, paymentMethods }: TopUpFormProp
             type="button"
             onClick={handleOrderSubmit}
             disabled={!selectedItem || !selectedPayment}
-            className="rounded-xl bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 px-6 py-3 text-xs sm:text-sm font-bold text-white shadow-[0_6px_24px_-8px_rgba(34,211,238,0.6)] hover:shadow-[0_8px_30px_-8px_rgba(34,211,238,0.8)] hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-40 disabled:pointer-events-none disabled:hover:scale-100"
+            className="rounded-xl bg-blue-600 px-6 py-3 text-xs sm:text-sm font-bold text-white hover:bg-blue-500 transition disabled:opacity-40 disabled:pointer-events-none"
           >
             <span>Beli Sekarang</span>
             <ArrowRight className="h-4 w-4" />

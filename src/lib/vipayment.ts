@@ -24,14 +24,17 @@ export function vipaymentSign(): string {
   return md5(`${apiId}${apiKey}`);
 }
 
-// App game slug -> kode game untuk get-nickname (dari nickname-game-code.txt)
+// App game slug -> kode game untuk get-nickname.
+// Daftar resmi VIPayment (https://vip-reseller.co.id/api/nickname-game-code.txt)
+// hanya mendukung game di bawah ini; game lain otomatis fallback ke mode demo.
 export const VIPAYMENT_NICKNAME_CODE: Record<string, string> = {
   "mobile-legends": "mobile-legends",
   "free-fire": "free-fire",
   "genshin-impact": "genshin-impact",
   "valorant": "valorant",
   "pubg-mobile": "pubgm",
-  "afk-journey": "afk-journey",
+  "honkai-star-rail": "honkai-star-rail",
+  "point-blank": "pointblank",
 };
 
 // App game slug -> nama game utk filter services (diurutkan prioritas)
