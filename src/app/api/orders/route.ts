@@ -10,11 +10,10 @@ import {
 import { generateInvoiceNumber, calculateFee } from "@/lib/utils";
 import { USER_COOKIE_NAME, verifyUserSession } from "@/lib/user-auth";
 import {
-  DUITKU_PAYMENT_MAP,
-  createDuitkuInvoice,
-  getAppUrl,
-  isDuitkuConfigured,
-} from "@/lib/duitku";
+  MIDTRANS_PAYMENT_MAP,
+  createMidtransCharge,
+  isMidtransConfigured,
+} from "@/lib/midtrans";
 import { packVipaymentNotes } from "@/lib/vipayment";
 
 export async function POST(req: NextRequest) {
@@ -69,44 +68,43 @@ export async function POST(req: NextRequest) {
     const invoiceNumber = generateInvoiceNumber();
     const expiredAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
 
-    // Payment details generation — Duitku real, fallback demo bila belum dikonfigurasi
+    // Payment details generation — Midtrans real, fallback demo bila belum dikonfigurasi
     let qrString: string | undefined;
+    let qrImageUrl: string | undefined;
     let vaNumber: string | undefined;
-    let duitkuNotes: Record<string, unknown> = {};
+    let vaExtra: string | undefined;
+    let providerNotes: Record<string, unknown> = {};
 
-    if (isDuitkuConfigured()) {
-      const duitkuCode =
-        DUITKU_PAYMENT_MAP[paymentMethod.code] ||
-        (paymentMethod.type === "QRIS" ? "NQ" : "BC");
-      const expiryMinutes =
-        duitkuCode === "SA" ? 60 : duitkuCode === "OV" ? 60 : 1440;
-
-      const duitku = await createDuitkuInvoice({
+    if (isMidtransConfigured()) {
+      const midMethod = MIDTRANS_PAYMENT_MAP[paymentMethod.code];
+      if (!midMethod) {
+        return NextResponse.json(
+          { success: false, error: `Metode ${paymentMethod.name} belum didukung Midtrans.` },
+          { status: 400 }
+        );
+      }
+      const charge = await createMidtransCharge({
         orderId: invoiceNumber,
         amount: totalAmount,
-        paymentMethod: duitkuCode,
-        productDetails: `${game.name} - ${item.name}`,
-        customerName: accountData.nickname || `RXR ${accountData.userId}`.slice(0, 20),
+        method: midMethod,
+        customerName: accountData.nickname || `RXR ${accountData.userId}`.slice(0, 50),
         email: customerEmail?.trim() || undefined,
         phone: customerPhone.trim(),
-        callbackUrl: `${getAppUrl()}/api/payments/duitku/callback`,
-        returnUrl: `${getAppUrl()}/order/${invoiceNumber}`,
-        expiryMinutes,
       });
 
-      if (!duitku.ok) {
+      if (!charge.ok) {
         return NextResponse.json(
-          { success: false, error: duitku.message || "Gagal membuat tagihan pembayaran." },
+          { success: false, error: charge.statusMessage || "Gagal membuat tagihan Midtrans." },
           { status: 502 }
         );
       }
 
-      qrString = duitku.qrString;
-      vaNumber = duitku.vaNumber;
-      duitkuNotes = {
-        duitkuReference: duitku.reference,
-        duitkuPayment: duitkuCode,
-        duitkuPaymentUrl: duitku.paymentUrl,
+      vaNumber = charge.vaNumber;
+      vaExtra = charge.vaExtra;
+      qrImageUrl = charge.qrImageUrl;
+      providerNotes = {
+        midtransPayment: paymentMethod.code,
+        midtransTransactionId: charge.transactionId,
       };
     } else if (paymentMethod.type === "QRIS") {
       qrString = `00020101021226580014ID.LINKAJA.WWW01189360091100000000005204581253033605802ID5910RXR_STORE6007JAKARTA61051234062070703A01${invoiceNumber}`;
@@ -149,12 +147,14 @@ export async function POST(req: NextRequest) {
       totalAmount,
       paymentDetails: {
         qrString,
+        qrImageUrl,
         vaNumber,
+        vaExtra,
         expiredAt,
       },
       notes:
-        Object.keys(duitkuNotes).length > 0
-          ? packVipaymentNotes(undefined, duitkuNotes)
+        Object.keys(providerNotes).length > 0
+          ? packVipaymentNotes(undefined, providerNotes)
           : undefined,
     });
 

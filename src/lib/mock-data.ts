@@ -2568,6 +2568,7 @@ export const initialPaymentMethods: PaymentMethod[] = [
   },
   {
     id: "pay-alfamart",
+    // Nonaktif: Midtrans tidak menyediakan channel Alfamart (cstore hanya Indomaret).
     code: "ALFAMART",
     name: "Alfamart / Alfamidi",
     type: "RETAIL",
@@ -2581,7 +2582,7 @@ export const initialPaymentMethods: PaymentMethod[] = [
       "Tunjukkan kode pembayaran yang tertera pada invoice.",
       "Bayar sesuai nominal ke kasir dan simpan struk pembayaran.",
     ],
-    isActive: true,
+    isActive: false,
     createdAt: new Date(),
   },
 ];

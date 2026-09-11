@@ -42,16 +42,19 @@ export default function OrderClient({
   const isProcessing = transaction.status === "PROCESSING";
   const isFailed = transaction.status === "FAILED";
 
-  let duitkuPaymentUrl: string | undefined;
+  let externalPaymentUrl: string | undefined;
   try {
     const parsed = transaction.notes ? JSON.parse(transaction.notes) : {};
-    if (typeof parsed.duitkuPaymentUrl === "string") {
-      duitkuPaymentUrl = parsed.duitkuPaymentUrl;
+    if (typeof parsed.midtransPaymentUrl === "string") {
+      externalPaymentUrl = parsed.midtransPaymentUrl;
     }
   } catch {
-    duitkuPaymentUrl = undefined;
+    externalPaymentUrl = undefined;
   }
-  const showQr = paymentMethodType === "QRIS" || Boolean(transaction.paymentDetails.qrString);
+  const showQr =
+    paymentMethodType === "QRIS" ||
+    Boolean(transaction.paymentDetails.qrString) ||
+    Boolean(transaction.paymentDetails.qrImageUrl);
 
   useEffect(() => {
     if (isSuccess) {
@@ -221,13 +224,13 @@ export default function OrderClient({
         {/* QRIS / VA Presentation */}
         {isPending && (
           <div className="glass relative rounded-2xl p-6 text-center space-y-4">
-            {duitkuPaymentUrl && !transaction.paymentDetails.qrString && !transaction.paymentDetails.vaNumber && (
+            {externalPaymentUrl && !transaction.paymentDetails.qrString && !transaction.paymentDetails.qrImageUrl && !transaction.paymentDetails.vaNumber && (
               <div className="space-y-3">
                 <div className="text-xs font-medium text-slate-300">
                   Selesaikan pembayaran melalui aplikasi {transaction.paymentMethodName}
                 </div>
                 <a
-                  href={duitkuPaymentUrl}
+                  href={externalPaymentUrl}
                   target="_blank"
                   rel="noreferrer"
                   className="btn-primary mx-auto px-6 py-2.5 text-xs"
@@ -244,13 +247,21 @@ export default function OrderClient({
 
                 {/* QR Code Container */}
                 <div className="mx-auto w-56 h-56 rounded-xl bg-white p-3 shadow-md flex items-center justify-center">
-                  <img
-                    src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
-                      transaction.paymentDetails.qrString || transaction.invoiceNumber
-                    )}`}
-                    alt="QRIS Pembayaran"
-                    className="w-full h-full object-contain"
-                  />
+                  {transaction.paymentDetails.qrImageUrl ? (
+                    <img
+                      src={transaction.paymentDetails.qrImageUrl}
+                      alt="QR Pembayaran"
+                      className="w-full h-full object-contain"
+                    />
+                  ) : (
+                    <img
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
+                        transaction.paymentDetails.qrString || transaction.invoiceNumber
+                      )}`}
+                      alt="QRIS Pembayaran"
+                      className="w-full h-full object-contain"
+                    />
+                  )}
                 </div>
 
                 <div className="text-[11px] text-slate-400">
@@ -262,6 +273,14 @@ export default function OrderClient({
                 <div className="text-xs font-medium text-slate-400">
                   Nomor {transaction.paymentMethodName}
                 </div>
+                {transaction.paymentDetails.vaExtra && (
+                  <div className="text-xs text-slate-400">
+                    Kode perusahaan:{" "}
+                    <span className="font-mono font-bold text-white">
+                      {transaction.paymentDetails.vaExtra}
+                    </span>
+                  </div>
+                )}
                 <div className="flex items-center justify-center gap-2">
                   <span className="font-mono text-2xl font-bold text-white tracking-wider">
                     {transaction.paymentDetails.vaNumber || "8077708123456789"}

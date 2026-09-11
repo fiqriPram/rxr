@@ -107,7 +107,9 @@ export const transactions = pgTable("transactions", {
   status: varchar("status", { length: 50 }).default("PENDING").notNull(), // 'PENDING' | 'PAID' | 'PROCESSING' | 'SUCCESS' | 'FAILED'
   paymentDetails: jsonb("payment_details").$type<{
     qrString?: string;
+    qrImageUrl?: string;
     vaNumber?: string;
+    vaExtra?: string;
     expiredAt: string;
     paidAt?: string;
   }>().notNull(),

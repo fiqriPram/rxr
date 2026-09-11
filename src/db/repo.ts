@@ -223,7 +223,13 @@ export async function createTransaction(data: {
   fee: number;
   discount: number;
   totalAmount: number;
-  paymentDetails: { qrString?: string; vaNumber?: string; expiredAt: string };
+  paymentDetails: {
+    qrString?: string;
+    qrImageUrl?: string;
+    vaNumber?: string;
+    vaExtra?: string;
+    expiredAt: string;
+  };
   notes?: string;
 }): Promise<Transaction> {
   const newTx: Transaction = {
