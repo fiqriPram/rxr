@@ -2467,6 +2467,7 @@ export const initialPaymentMethods: PaymentMethod[] = [
     feeFlat: 0,
     feePercentage: "0.70",
     iconUrl: "https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg",
+    accountNumber: null,
     instructions: [
       "Pilih metode QRIS dan klik Beli Sekarang untuk mendapatkan kode QR.",
       "Scan kode QR dengan aplikasi apa saja: GoPay, DANA, OVO, ShopeePay, m-BCA, Livin', BRImo.",
