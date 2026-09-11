@@ -5,8 +5,15 @@ import {
   isVipaymentConfigured,
   VIPAYMENT_NICKNAME_CODE,
 } from "@/lib/vipayment";
+import { clientKey, rateLimit } from "@/lib/rate-limit";
 
 export async function POST(req: NextRequest) {
+  if (!rateLimit(clientKey(req, "check-nickname"), 30, 60 * 1000)) {
+    return NextResponse.json(
+      { success: false, error: "Terlalu banyak cek ID. Tunggu sebentar." },
+      { status: 429 }
+    );
+  }
   try {
     const body = await req.json();
     const { gameSlug, userId, zoneId, server } = body;

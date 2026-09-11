@@ -1,7 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ADMIN_COOKIE_NAME, createAdminSession } from "@/lib/admin-auth";
+import { clientKey, rateLimit } from "@/lib/rate-limit";
 
 export async function POST(req: NextRequest) {
+  if (!rateLimit(clientKey(req, "admin-login"), 10, 60 * 1000)) {
+    return NextResponse.json(
+      { success: false, error: "Terlalu banyak percobaan. Tunggu sebentar." },
+      { status: 429 }
+    );
+  }
+
   const expected = process.env.ADMIN_PASSWORD || "";
   if (!expected) {
     return NextResponse.json(

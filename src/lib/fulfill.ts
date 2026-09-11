@@ -152,7 +152,18 @@ export async function fulfillVipaymentOrder(invoice: string): Promise<FulfillRes
     }
   }
 
-  // Fallback demo: mark SUCCESS tanpa provider
+  // Fallback demo: mark SUCCESS tanpa provider.
+  // Di production JANGAN PERNAH sukses palsu — tahan sebagai PROCESSING untuk follow-up manual.
+  if (process.env.NODE_ENV === "production") {
+    const held = await updateTransactionStatus(invoice, "PROCESSING", {
+      notes: packVipaymentNotes(existing.notes, { hold: "provider_unmapped" }),
+    });
+    return {
+      status: "PROCESSING",
+      message: "Pembayaran diterima. Item menunggu pengiriman manual oleh admin.",
+      tx: held,
+    };
+  }
   const updated = await updateTransactionStatus(invoice, "SUCCESS");
   return {
     status: "SUCCESS",

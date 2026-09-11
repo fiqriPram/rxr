@@ -1,8 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getUserByEmail } from "@/db/repo";
 import { USER_COOKIE_NAME, createUserSession, verifyPassword } from "@/lib/user-auth";
+import { clientKey, rateLimit } from "@/lib/rate-limit";
 
 export async function POST(req: NextRequest) {
+  if (!rateLimit(clientKey(req, "user-login"), 10, 60 * 1000)) {
+    return NextResponse.json(
+      { success: false, error: "Terlalu banyak percobaan. Tunggu sebentar." },
+      { status: 429 }
+    );
+  }
   try {
     const body = await req.json();
     const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";

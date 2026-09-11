@@ -22,10 +22,19 @@ export async function POST(
       });
     }
 
-    // Status refresh: order sudah dikirim ke provider, tinggal cek statusnya
+    // Status refresh: order sudah dikirim ke provider, tinggal cek statusnya.
+    // Jalur ini aman di production (hanya baca status, tanpa pembayaran palsu).
     if (existing.status === "PROCESSING") {
       const r = await refreshVipaymentStatus(invoice);
       return NextResponse.json({ success: r.done, message: r.message, data: r.tx });
+    }
+
+    // Jalur pembayaran palsu (demo) — MATI TOTAL di production.
+    if (process.env.NODE_ENV === "production") {
+      return NextResponse.json(
+        { success: false, error: "Konfirmasi manual dinonaktifkan di production." },
+        { status: 403 }
+      );
     }
 
     // Konfirmasi pembayaran + kirim order real ke provider VIPayment

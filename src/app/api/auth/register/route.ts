@@ -6,8 +6,15 @@ import {
   hashPassword,
   isValidEmail,
 } from "@/lib/user-auth";
+import { clientKey, rateLimit } from "@/lib/rate-limit";
 
 export async function POST(req: NextRequest) {
+  if (!rateLimit(clientKey(req, "user-register"), 10, 60 * 1000)) {
+    return NextResponse.json(
+      { success: false, error: "Terlalu banyak percobaan. Tunggu sebentar." },
+      { status: 429 }
+    );
+  }
   try {
     const body = await req.json();
     const name = typeof body.name === "string" ? body.name.trim() : "";

@@ -23,12 +23,14 @@ interface OrderClientProps {
   initialTransaction: Transaction;
   instructions: string[];
   paymentMethodType: string;
+  allowSandbox?: boolean;
 }
 
 export default function OrderClient({
   initialTransaction,
   instructions,
   paymentMethodType,
+  allowSandbox = false,
 }: OrderClientProps) {
   const [transaction, setTransaction] = useState<Transaction>(initialTransaction);
   const [copiedVa, setCopiedVa] = useState(false);
@@ -45,8 +47,8 @@ export default function OrderClient({
   let externalPaymentUrl: string | undefined;
   try {
     const parsed = transaction.notes ? JSON.parse(transaction.notes) : {};
-    if (typeof parsed.midtransPaymentUrl === "string") {
-      externalPaymentUrl = parsed.midtransPaymentUrl;
+    if (typeof parsed.ipaymuUrl === "string") {
+      externalPaymentUrl = parsed.ipaymuUrl;
     }
   } catch {
     externalPaymentUrl = undefined;
@@ -377,8 +379,9 @@ export default function OrderClient({
         )}
       </div>
 
-      {/* Clean Developer / Testing Sandbox Bar */}
-      {(isPending || isProcessing) && (
+      {/* Developer / Testing Sandbox Bar — hanya tampil di non-production.
+          Di production, tombol "Periksa Status" tetap tampil untuk order PROCESSING. */}
+      {(isProcessing || (isPending && allowSandbox)) && (
         <div className="rounded-lg border border-dashed border-line-strong bg-field-2 p-3 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-400">
           <div className="flex items-center gap-2">
             <FlaskConical className="h-4 w-4 text-amber-400 shrink-0" />

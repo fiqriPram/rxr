@@ -2568,7 +2568,6 @@ export const initialPaymentMethods: PaymentMethod[] = [
   },
   {
     id: "pay-alfamart",
-    // Nonaktif: Midtrans tidak menyediakan channel Alfamart (cstore hanya Indomaret).
     code: "ALFAMART",
     name: "Alfamart / Alfamidi",
     type: "RETAIL",
@@ -2577,12 +2576,12 @@ export const initialPaymentMethods: PaymentMethod[] = [
     iconUrl: "https://upload.wikimedia.org/wikipedia/commons/8/86/Alfamart_logo.svg",
     accountNumber: "ALFA-901823719",
     instructions: [
-      "Kunjungi gerai Alfamart terdekat.",
-      "Sampaikan kepada kasir ingin melakukan pembayaran tagihan merchant 'RXR'.",
-      "Tunjukkan kode pembayaran yang tertera pada invoice.",
-      "Bayar sesuai nominal ke kasir dan simpan struk pembayaran.",
+      "Pilih metode Alfamart dan klik Beli Sekarang untuk mendapatkan kode pembayaran.",
+      "Kunjungi gerai Alfamart/Alfamidi terdekat.",
+      "Sampaikan kode pembayaran ke kasir dan bayar sesuai nominal.",
+      "Pesanan diproses otomatis begitu pembayaran diterima.",
     ],
-    isActive: false,
+    isActive: true,
     createdAt: new Date(),
   },
 ];

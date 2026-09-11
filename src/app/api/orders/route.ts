@@ -4,16 +4,18 @@ import {
   getGameBySlug,
   getItemsByGameId,
   getPaymentMethods,
+  getUserById,
   validatePromoCode,
   getTransactionsByPhone,
 } from "@/db/repo";
 import { generateInvoiceNumber, calculateFee } from "@/lib/utils";
 import { USER_COOKIE_NAME, verifyUserSession } from "@/lib/user-auth";
 import {
-  MIDTRANS_PAYMENT_MAP,
-  createMidtransCharge,
-  isMidtransConfigured,
-} from "@/lib/midtrans";
+  IPAYMU_PAYMENT_MAP,
+  createIpaymuPayment,
+  getAppUrl,
+  isIpaymuConfigured,
+} from "@/lib/ipaymu";
 import { packVipaymentNotes } from "@/lib/vipayment";
 
 export async function POST(req: NextRequest) {
@@ -68,44 +70,54 @@ export async function POST(req: NextRequest) {
     const invoiceNumber = generateInvoiceNumber();
     const expiredAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
 
-    // Payment details generation — Midtrans real, fallback demo bila belum dikonfigurasi
+    // Payment details generation — iPaymu real, fallback demo bila belum dikonfigurasi
     let qrString: string | undefined;
     let qrImageUrl: string | undefined;
     let vaNumber: string | undefined;
     let vaExtra: string | undefined;
     let providerNotes: Record<string, unknown> = {};
 
-    if (isMidtransConfigured()) {
-      const midMethod = MIDTRANS_PAYMENT_MAP[paymentMethod.code];
-      if (!midMethod) {
+    if (isIpaymuConfigured()) {
+      const channel = IPAYMU_PAYMENT_MAP[paymentMethod.code];
+      if (!channel) {
         return NextResponse.json(
-          { success: false, error: `Metode ${paymentMethod.name} belum didukung Midtrans.` },
+          { success: false, error: `Metode ${paymentMethod.name} belum didukung iPaymu.` },
           { status: 400 }
         );
       }
-      const charge = await createMidtransCharge({
+      const payment = await createIpaymuPayment({
         orderId: invoiceNumber,
         amount: totalAmount,
-        method: midMethod,
+        channel,
         customerName: accountData.nickname || `RXR ${accountData.userId}`.slice(0, 50),
         email: customerEmail?.trim() || undefined,
         phone: customerPhone.trim(),
+        productName: `${game.name} - ${item.name}`,
+        notifyUrl: `${getAppUrl()}/api/payments/ipaymu/notification`,
+        expiryHours: 24,
       });
 
-      if (!charge.ok) {
+      if (!payment.ok) {
         return NextResponse.json(
-          { success: false, error: charge.statusMessage || "Gagal membuat tagihan Midtrans." },
+          { success: false, error: payment.message || "Gagal membuat tagihan iPaymu." },
           { status: 502 }
         );
       }
 
-      vaNumber = charge.vaNumber;
-      vaExtra = charge.vaExtra;
-      qrImageUrl = charge.qrImageUrl;
+      // VA/cstore -> nomor bayar; QRIS/ewallet -> halaman pembayaran iPaymu
+      if (payment.paymentNo) vaNumber = payment.paymentNo;
       providerNotes = {
-        midtransPayment: paymentMethod.code,
-        midtransTransactionId: charge.transactionId,
+        ipaymuPayment: paymentMethod.code,
+        ipaymuChannel: channel.paymentChannel,
+        ipaymuTransactionId: payment.transactionId,
+        ipaymuUrl: payment.url,
       };
+    } else if (process.env.NODE_ENV === "production") {
+      // JANGAN PERNAH buat VA/QR palsu di production — tolak dengan jelas.
+      return NextResponse.json(
+        { success: false, error: "Payment gateway belum dikonfigurasi di server production." },
+        { status: 503 }
+      );
     } else if (paymentMethod.type === "QRIS") {
       qrString = `00020101021226580014ID.LINKAJA.WWW01189360091100000000005204581253033605802ID5910RXR_STORE6007JAKARTA61051234062070703A01${invoiceNumber}`;
     } else if (paymentMethod.type === "VA") {
@@ -175,6 +187,25 @@ export async function GET(req: NextRequest) {
 
     if (!phone) {
       return NextResponse.json({ success: false, error: "Nomor WhatsApp wajib diisi" }, { status: 400 });
+    }
+
+    // Anti-intip: riwayat per nomor HP hanya untuk pemiliknya yang login.
+    // Tamu tetap bisa lacak via nomor invoice di /order/[invoice].
+    const session = await verifyUserSession(req.cookies.get(USER_COOKIE_NAME)?.value);
+    if (!session) {
+      return NextResponse.json(
+        { success: false, error: "Silakan masuk untuk melihat riwayat pesanan." },
+        { status: 401 }
+      );
+    }
+    const user = await getUserById(session.userId);
+    const ownerPhone = (user?.phone || "").replace(/[^0-9]/g, "");
+    const queryPhone = phone.replace(/[^0-9]/g, "");
+    if (!ownerPhone || ownerPhone !== queryPhone) {
+      return NextResponse.json(
+        { success: false, error: "Nomor tidak cocok dengan akun Anda." },
+        { status: 403 }
+      );
     }
 
     const orders = await getTransactionsByPhone(phone);
