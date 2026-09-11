@@ -2460,6 +2460,23 @@ export const initialItems: Item[] = [
 
 export const initialPaymentMethods: PaymentMethod[] = [
   {
+    id: "pay-qris",
+    code: "QRIS",
+    name: "QRIS",
+    type: "QRIS",
+    feeFlat: 0,
+    feePercentage: "0.70",
+    iconUrl: "https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg",
+    instructions: [
+      "Pilih metode QRIS dan klik Beli Sekarang untuk mendapatkan kode QR.",
+      "Scan kode QR dengan aplikasi apa saja: GoPay, DANA, OVO, ShopeePay, m-BCA, Livin', BRImo.",
+      "Pastikan nominal sesuai lalu konfirmasi pembayaran di aplikasi.",
+      "Pesanan diproses otomatis begitu pembayaran diterima.",
+    ],
+    isActive: true,
+    createdAt: new Date(),
+  },
+  {
     id: "pay-dana",
     code: "DANA",
     name: "DANA",
@@ -2610,6 +2627,7 @@ const TX_FILE = path.join(DATA_DIR, "transactions.json");
 const sampleTransactions: Transaction[] = [
   {
     id: "tx-sample-1",
+    userId: null,
     invoiceNumber: "TPY-SAMPLE-001",
     gameId: "game-mlbb",
     gameName: "Mobile Legends: Bang Bang",

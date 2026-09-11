@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Transaction } from "@/db/schema";
 import { formatRupiah } from "@/lib/utils";
@@ -23,6 +23,31 @@ export default function TrackOrderPage() {
   const [loading, setLoading] = useState(false);
   const [phoneOrders, setPhoneOrders] = useState<Transaction[] | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const [loggedName, setLoggedName] = useState<string | null>(null);
+
+  // Jika user login & punya no. WA, langsung tampilkan riwayatnya
+  useEffect(() => {
+    fetch("/api/auth/me")
+      .then((r) => r.json())
+      .then(async (d) => {
+        if (d.success && d.data?.phone) {
+          setLoggedName(d.data.name);
+          setSearchType("phone");
+          setPhoneInput(d.data.phone);
+          setLoading(true);
+          try {
+            const res = await fetch(`/api/orders?phone=${encodeURIComponent(d.data.phone)}`);
+            const od = await res.json();
+            if (od.success) setPhoneOrders(od.data || []);
+          } catch {
+            // abaikan, user bisa cari manual
+          } finally {
+            setLoading(false);
+          }
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const handleSearchInvoice = (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,7 +92,9 @@ export default function TrackOrderPage() {
           Lacak Pesanan
         </h1>
         <p className="text-xs text-slate-400">
-          Cek status transaksi dan bukti pembayaran faktur Anda.
+          {loggedName
+            ? `Riwayat pesanan ${loggedName} dan pelacakan faktur Anda.`
+            : "Cek status transaksi dan bukti pembayaran faktur Anda."}
         </p>
       </div>
 

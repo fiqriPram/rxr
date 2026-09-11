@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Search,
@@ -11,12 +11,37 @@ import {
   Menu,
   X,
   Sparkles,
+  User,
+  LogOut,
 } from "lucide-react";
+
+interface AuthUser {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+}
 
 export default function Navbar() {
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchVal, setSearchVal] = useState("");
+  const [authUser, setAuthUser] = useState<AuthUser | null>(null);
+
+  useEffect(() => {
+    fetch("/api/auth/me")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.success && d.data) setAuthUser(d.data);
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleLogout = async () => {
+    await fetch("/api/auth/login", { method: "DELETE" });
+    setAuthUser(null);
+    router.refresh();
+  };
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -101,6 +126,29 @@ export default function Navbar() {
             <span>CS 24 Jam</span>
           </a>
 
+          {authUser ? (
+            <div className="flex items-center gap-2">
+              <span className="flex items-center gap-1.5 rounded-lg border border-line-2 bg-panel-2 px-3 py-1.5 text-xs font-semibold text-slate-200">
+                <User className="h-3.5 w-3.5 text-blue-400" />
+                <span className="max-w-24 truncate">{authUser.name}</span>
+              </span>
+              <button
+                onClick={handleLogout}
+                className="rounded-lg p-2 text-slate-400 hover:bg-panel-3 hover:text-rose-300 transition"
+                title="Keluar"
+              >
+                <LogOut className="h-4 w-4" />
+              </button>
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              className="btn-primary px-4 py-1.5 text-xs"
+            >
+              Masuk / Daftar
+            </Link>
+          )}
+
           <Link
             href="/admin"
             className="rounded-lg p-2 text-slate-400 hover:bg-panel-3 hover:text-slate-200 transition"
@@ -163,6 +211,25 @@ export default function Navbar() {
             >
               Lacak Pesanan
             </Link>
+            {authUser ? (
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setMobileMenuOpen(false);
+                }}
+                className="block w-full text-left rounded-lg px-3 py-2 text-slate-200 hover:bg-panel-2"
+              >
+                Keluar ({authUser.name})
+              </button>
+            ) : (
+              <Link
+                href="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block rounded-lg px-3 py-2 text-blue-400 hover:bg-panel-2"
+              >
+                Masuk / Daftar
+              </Link>
+            )}
             <Link
               href="/admin"
               onClick={() => setMobileMenuOpen(false)}

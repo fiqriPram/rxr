@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Game, Item, PaymentMethod } from "@/db/schema";
 import { formatRupiah, calculateFee } from "@/lib/utils";
@@ -55,6 +55,19 @@ export default function TopUpForm({ game, items, paymentMethods }: TopUpFormProp
   } | null>(null);
   const [isCheckingPromo, setIsCheckingPromo] = useState(false);
   const [promoError, setPromoError] = useState("");
+
+  // Prefill kontak dari akun yang login
+  useEffect(() => {
+    fetch("/api/auth/me")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.success && d.data) {
+          if (d.data.phone) setCustomerPhone((p) => p || d.data.phone);
+          if (d.data.email) setCustomerEmail((p) => p || d.data.email);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // Modal
   const [isModalOpen, setIsModalOpen] = useState(false);

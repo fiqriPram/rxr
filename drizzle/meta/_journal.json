@@ -8,6 +8,13 @@
       "when": 1789052250441,
       "tag": "0000_noisy_tombstone",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1789137865224,
+      "tag": "0001_gifted_scarlet_spider",
+      "breakpoints": true
     }
   ]
 }

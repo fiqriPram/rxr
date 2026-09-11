@@ -42,6 +42,17 @@ export default function OrderClient({
   const isProcessing = transaction.status === "PROCESSING";
   const isFailed = transaction.status === "FAILED";
 
+  let duitkuPaymentUrl: string | undefined;
+  try {
+    const parsed = transaction.notes ? JSON.parse(transaction.notes) : {};
+    if (typeof parsed.duitkuPaymentUrl === "string") {
+      duitkuPaymentUrl = parsed.duitkuPaymentUrl;
+    }
+  } catch {
+    duitkuPaymentUrl = undefined;
+  }
+  const showQr = paymentMethodType === "QRIS" || Boolean(transaction.paymentDetails.qrString);
+
   useEffect(() => {
     if (isSuccess) {
       confetti({
@@ -209,8 +220,23 @@ export default function OrderClient({
 
         {/* QRIS / VA Presentation */}
         {isPending && (
-          <div className="rounded-xl border border-line bg-canvas-soft p-6 text-center space-y-4">
-            {paymentMethodType === "QRIS" ? (
+          <div className="glass relative rounded-2xl p-6 text-center space-y-4">
+            {duitkuPaymentUrl && !transaction.paymentDetails.qrString && !transaction.paymentDetails.vaNumber && (
+              <div className="space-y-3">
+                <div className="text-xs font-medium text-slate-300">
+                  Selesaikan pembayaran melalui aplikasi {transaction.paymentMethodName}
+                </div>
+                <a
+                  href={duitkuPaymentUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn-primary mx-auto px-6 py-2.5 text-xs"
+                >
+                  Bayar via {transaction.paymentMethodName} →
+                </a>
+              </div>
+            )}
+            {showQr ? (
               <div className="space-y-3">
                 <div className="text-xs font-medium text-slate-300">
                   Scan QRIS dengan aplikasi Bank atau E-Wallet apa saja

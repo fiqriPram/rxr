@@ -8,6 +8,14 @@ import {
   getTransactionsByPhone,
 } from "@/db/repo";
 import { generateInvoiceNumber, calculateFee } from "@/lib/utils";
+import { USER_COOKIE_NAME, verifyUserSession } from "@/lib/user-auth";
+import {
+  DUITKU_PAYMENT_MAP,
+  createDuitkuInvoice,
+  getAppUrl,
+  isDuitkuConfigured,
+} from "@/lib/duitku";
+import { packVipaymentNotes } from "@/lib/vipayment";
 
 export async function POST(req: NextRequest) {
   try {
@@ -61,11 +69,46 @@ export async function POST(req: NextRequest) {
     const invoiceNumber = generateInvoiceNumber();
     const expiredAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
 
-    // Payment details generation
+    // Payment details generation — Duitku real, fallback demo bila belum dikonfigurasi
     let qrString: string | undefined;
     let vaNumber: string | undefined;
+    let duitkuNotes: Record<string, unknown> = {};
 
-    if (paymentMethod.type === "QRIS") {
+    if (isDuitkuConfigured()) {
+      const duitkuCode =
+        DUITKU_PAYMENT_MAP[paymentMethod.code] ||
+        (paymentMethod.type === "QRIS" ? "NQ" : "BC");
+      const expiryMinutes =
+        duitkuCode === "SA" ? 60 : duitkuCode === "OV" ? 60 : 1440;
+
+      const duitku = await createDuitkuInvoice({
+        orderId: invoiceNumber,
+        amount: totalAmount,
+        paymentMethod: duitkuCode,
+        productDetails: `${game.name} - ${item.name}`,
+        customerName: accountData.nickname || `RXR ${accountData.userId}`.slice(0, 20),
+        email: customerEmail?.trim() || undefined,
+        phone: customerPhone.trim(),
+        callbackUrl: `${getAppUrl()}/api/payments/duitku/callback`,
+        returnUrl: `${getAppUrl()}/order/${invoiceNumber}`,
+        expiryMinutes,
+      });
+
+      if (!duitku.ok) {
+        return NextResponse.json(
+          { success: false, error: duitku.message || "Gagal membuat tagihan pembayaran." },
+          { status: 502 }
+        );
+      }
+
+      qrString = duitku.qrString;
+      vaNumber = duitku.vaNumber;
+      duitkuNotes = {
+        duitkuReference: duitku.reference,
+        duitkuPayment: duitkuCode,
+        duitkuPaymentUrl: duitku.paymentUrl,
+      };
+    } else if (paymentMethod.type === "QRIS") {
       qrString = `00020101021226580014ID.LINKAJA.WWW01189360091100000000005204581253033605802ID5910RXR_STORE6007JAKARTA61051234062070703A01${invoiceNumber}`;
     } else if (paymentMethod.type === "VA") {
       const prefix = paymentMethod.code.includes("BCA")
@@ -81,7 +124,10 @@ export async function POST(req: NextRequest) {
       vaNumber = paymentMethod.accountNumber || `RXR-${Math.floor(10000000 + Math.random() * 90000000)}`;
     }
 
+    const session = await verifyUserSession(req.cookies.get(USER_COOKIE_NAME)?.value);
+
     const tx = await createTransaction({
+      userId: session?.userId,
       invoiceNumber,
       gameId: game.id,
       gameName: game.name,
@@ -106,6 +152,10 @@ export async function POST(req: NextRequest) {
         vaNumber,
         expiredAt,
       },
+      notes:
+        Object.keys(duitkuNotes).length > 0
+          ? packVipaymentNotes(undefined, duitkuNotes)
+          : undefined,
     });
 
     return NextResponse.json({

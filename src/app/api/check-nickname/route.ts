@@ -44,10 +44,20 @@ export async function POST(req: NextRequest) {
           });
         }
 
-        return NextResponse.json(
-          { success: false, error: result.message || "User ID tidak valid." },
-          { status: 400 }
-        );
+        // Error koneksi/IP/blokir provider -> fallback demo agar user tetap bisa lanjut.
+        // Error ID tidak valid -> tetap 400.
+        const providerMsg = result.message || "";
+        const isProviderIssue =
+          /tidak diizinkan|not allowed|blokir|block|invalid.*key|unauthor|maintenance|server|timeout|network|fetch failed/i.test(
+            providerMsg
+          );
+        if (!isProviderIssue) {
+          return NextResponse.json(
+            { success: false, error: providerMsg || "User ID tidak valid." },
+            { status: 400 }
+          );
+        }
+        console.warn("VIPayment nickname provider issue, falling back to mock:", providerMsg);
       } catch (e) {
         console.warn("VIPayment nickname check failed, falling back to mock:", e);
       }
