@@ -37,6 +37,7 @@ export default function TopUpForm({ game, items, paymentMethods }: TopUpFormProp
   const [isCheckingNick, setIsCheckingNick] = useState(false);
   const [nickChecked, setNickChecked] = useState(false);
   const [nickError, setNickError] = useState("");
+  const [nickDemo, setNickDemo] = useState(false);
 
   // Selections
   const [selectedItem, setSelectedItem] = useState<Item | null>(items[0] || null);
@@ -116,6 +117,7 @@ export default function TopUpForm({ game, items, paymentMethods }: TopUpFormProp
       if (data.success) {
         setNickname(data.data.nickname);
         setNickChecked(true);
+        setNickDemo(Boolean(data.data.demo));
       } else {
         setNickError(data.error || "Gagal verifikasi ID");
       }
@@ -324,9 +326,20 @@ export default function TopUpForm({ game, items, paymentMethods }: TopUpFormProp
               </button>
 
               {nickChecked && nickname && (
-                <span className="flex items-center gap-1 rounded-lg bg-emerald-950/60 border border-emerald-500/30 px-2.5 py-1 text-xs text-emerald-300">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
-                  <span>Akun: <strong>{nickname}</strong></span>
+                <span
+                  className={`flex items-center gap-1 rounded-lg border px-2.5 py-1 text-xs ${
+                    nickDemo
+                      ? "bg-amber-950/60 border-amber-500/30 text-amber-300"
+                      : "bg-emerald-950/60 border-emerald-500/30 text-emerald-300"
+                  }`}
+                >
+                  <CheckCircle2
+                    className={`h-3.5 w-3.5 ${nickDemo ? "text-amber-400" : "text-emerald-400"}`}
+                  />
+                  <span>
+                    Akun: <strong>{nickname}</strong>
+                    {nickDemo && " (demo — cek real aktif di server produksi)"}
+                  </span>
                 </span>
               )}
 

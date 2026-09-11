@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Fallback: mock nickname generator
+    // Fallback: mock nickname generator (JELAS bertanda demo, bukan nickname asli)
     const nickname = mockGameNickname(gameSlug || "game", cleanUserId, zone);
 
     return NextResponse.json({
@@ -73,7 +73,8 @@ export async function POST(req: NextRequest) {
         zoneId: zoneId ? zoneId.trim() : undefined,
         server: server ? server.trim() : undefined,
         nickname,
-        verified: true,
+        verified: false,
+        demo: true,
       },
     });
   } catch (error) {
