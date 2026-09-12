@@ -13,6 +13,7 @@ function appUrl(): string {
 
 export const auth = betterAuth({
   baseURL: appUrl(),
+  secret: process.env.BETTER_AUTH_SECRET,
   database: drizzleAdapter(db, {
     provider: "pg",
     schema,

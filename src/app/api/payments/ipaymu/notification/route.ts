@@ -24,7 +24,13 @@ export async function POST(req: NextRequest) {
       (typeof raw.signature === "string" ? raw.signature : "");
 
     if (!verifyIpaymuCallback(raw, receivedSignature)) {
-      console.warn("iPaymu notification: bad signature");
+      console.warn("iPaymu notification: bad signature", {
+        keys: Object.keys(raw).sort(),
+        reference: raw.reference_id ?? raw.referenceId ?? null,
+        status: raw.status ?? raw.status_code ?? null,
+        receivedSigPrefix:
+          typeof receivedSignature === "string" ? receivedSignature.slice(0, 12) : null,
+      });
       return NextResponse.json({ error: "Bad signature" }, { status: 400 });
     }
 
