@@ -61,8 +61,13 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/contact" className="hover:text-white transition">
+                  Kontak Kami
+                </Link>
+              </li>
+              <li>
                 <a
-                  href="https://wa.me/6281234567890"
+                  href="https://wa.me/6285754335542"
                   target="_blank"
                   rel="noreferrer"
                   className="hover:text-white transition"
@@ -78,15 +83,22 @@ export default function Footer() {
             <h4 className="text-xs font-bold uppercase tracking-wider text-white">Bantuan & Ketentuan</h4>
             <ul className="space-y-1.5 text-xs">
               <li>
-                <span className="text-slate-400">Jam Operasional: 24/7 Nonstop</span>
-              </li>
-              <li>
-                <span className="text-slate-400">Garansi: 100% Produk Legal</span>
-              </li>
-              <li>
-                <Link href="/admin" className="text-slate-400 hover:text-white transition">
-                  Portal Admin
+                <Link href="/terms" className="text-slate-400 hover:text-white transition">
+                  Syarat & Ketentuan
                 </Link>
+              </li>
+              <li>
+                <Link href="/refund" className="text-slate-400 hover:text-white transition">
+                  Pengembalian Dana
+                </Link>
+              </li>
+              <li>
+                <Link href="/kebijakan-privasi" className="text-slate-400 hover:text-white transition">
+                  Kebijakan Privasi
+                </Link>
+              </li>
+              <li>
+                <span className="text-slate-400">Jam Operasional: 24/7 Nonstop</span>
               </li>
             </ul>
           </div>
@@ -96,8 +108,9 @@ export default function Footer() {
         <div className="border-t border-line-soft pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-400">
           <p>© {new Date().getFullYear()} RXR. Seluruh hak cipta dilindungi undang-undang.</p>
           <div className="flex gap-4 mt-2 sm:mt-0">
-            <Link href="/syarat-ketentuan" className="hover:text-slate-200 transition">Syarat & Ketentuan</Link>
-            <Link href="/kebijakan-privasi" className="hover:text-slate-200 transition">Kebijakan Privasi</Link>
+            <Link href="/terms" className="hover:text-slate-200 transition">Syarat & Ketentuan</Link>
+            <Link href="/refund" className="hover:text-slate-200 transition">Refund</Link>
+            <Link href="/contact" className="hover:text-slate-200 transition">Kontak</Link>
           </div>
         </div>
       </div>

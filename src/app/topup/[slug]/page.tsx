@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getGameBySlug, getItemsByGameId, getPaymentMethods } from "@/db/repo";
 import TopUpForm from "@/components/TopUpForm";
+import SafeImage from "@/components/SafeImage";
 import { ArrowLeft, ShieldCheck, Zap, Clock } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -53,10 +54,11 @@ export default async function TopUpPage({ params }: TopUpPageProps) {
           <div className="rounded-xl border border-line bg-panel overflow-hidden">
             {/* Cover Banner */}
             <div className="relative aspect-video w-full overflow-hidden bg-canvas-soft">
-              <img
+              <SafeImage
                 src={game.bannerUrl}
                 alt={game.name}
                 className="h-full w-full object-cover"
+                loading="eager"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-panel via-panel/40 to-transparent" />
             </div>
@@ -65,10 +67,11 @@ export default async function TopUpPage({ params }: TopUpPageProps) {
             <div className="p-4 sm:p-5 -mt-10 relative z-10 space-y-3">
               <div className="flex items-end gap-3">
                 <div className="h-16 w-16 shrink-0 overflow-hidden rounded-xl border border-line-strong bg-canvas-soft shadow-md">
-                  <img
+                  <SafeImage
                     src={game.thumbnailUrl}
                     alt={game.name}
                     className="h-full w-full object-cover"
+                    loading="eager"
                   />
                 </div>
                 <div className="pb-0.5">

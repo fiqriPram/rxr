@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { User, Mail, Phone, Lock, Loader2, UserPlus } from "lucide-react";
 import { signUp, signIn } from "@/lib/auth-client";
@@ -30,7 +29,6 @@ function GoogleIcon() {
 }
 
 export default function RegisterPage() {
-  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -58,8 +56,8 @@ export default function RegisterPage() {
             : msg || "Gagal mendaftar."
         );
       } else {
-        router.push("/");
-        router.refresh();
+        // Full reload agar status login di navbar langsung tampil
+        window.location.href = "/";
       }
     } catch {
       setError("Gangguan jaringan. Coba lagi.");

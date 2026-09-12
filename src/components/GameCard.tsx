@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Game } from "@/db/schema";
 import { Zap, Gamepad2 } from "lucide-react";
+import SafeImage from "./SafeImage";
 
 interface GameCardProps {
   game: Game;
@@ -16,11 +17,10 @@ export default function GameCard({ game }: GameCardProps) {
     >
       {/* Game Thumbnail */}
       <div className="relative aspect-square w-full overflow-hidden bg-panel-2">
-        <img
+        <SafeImage
           src={game.thumbnailUrl}
           alt={game.name}
           className="absolute inset-0 h-full w-full object-contain p-3"
-          loading="lazy"
         />
 
         {/* Badges */}

@@ -7,12 +7,12 @@ import {
   Search,
   Receipt,
   Headphones,
-  Shield,
   Menu,
   X,
   Sparkles,
   User,
   LogOut,
+  XCircle,
 } from "lucide-react";
 
 interface AuthUser {
@@ -27,6 +27,7 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchVal, setSearchVal] = useState("");
   const [authUser, setAuthUser] = useState<AuthUser | null>(null);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   useEffect(() => {
     fetch("/api/auth/me")
@@ -41,7 +42,8 @@ export default function Navbar() {
     const { signOut } = await import("@/lib/auth-client");
     await signOut();
     setAuthUser(null);
-    router.refresh();
+    setShowLogoutConfirm(false);
+    window.location.href = "/";
   };
 
   const handleSearchSubmit = (e: React.FormEvent) => {
@@ -118,7 +120,7 @@ export default function Navbar() {
           </Link>
 
           <a
-            href="https://wa.me/6281234567890"
+            href="https://wa.me/6285754335542"
             target="_blank"
             rel="noreferrer"
             className="flex items-center gap-1.5 rounded-lg bg-emerald-600/15 border border-emerald-500/30 px-3 py-1.5 text-xs font-semibold text-emerald-300 hover:bg-emerald-600/25 transition"
@@ -134,7 +136,7 @@ export default function Navbar() {
                 <span className="max-w-24 truncate">{authUser.name}</span>
               </span>
               <button
-                onClick={handleLogout}
+                onClick={() => setShowLogoutConfirm(true)}
                 className="rounded-lg p-2 text-slate-400 hover:bg-panel-3 hover:text-rose-300 transition"
                 title="Keluar"
               >
@@ -150,13 +152,6 @@ export default function Navbar() {
             </Link>
           )}
 
-          <Link
-            href="/admin"
-            className="rounded-lg p-2 text-slate-400 hover:bg-panel-3 hover:text-slate-200 transition"
-            title="Admin Dashboard"
-          >
-            <Shield className="h-4 w-4" />
-          </Link>
         </div>
 
         {/* Mobile menu trigger */}
@@ -215,8 +210,8 @@ export default function Navbar() {
             {authUser ? (
               <button
                 onClick={() => {
-                  handleLogout();
                   setMobileMenuOpen(false);
+                  setShowLogoutConfirm(true);
                 }}
                 className="block w-full text-left rounded-lg px-3 py-2 text-slate-200 hover:bg-panel-2"
               >
@@ -231,13 +226,36 @@ export default function Navbar() {
                 Masuk / Daftar
               </Link>
             )}
-            <Link
-              href="/admin"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block rounded-lg px-3 py-2 text-slate-400 hover:bg-panel-2"
-            >
-              Admin Dashboard
-            </Link>
+
+          </div>
+        </div>
+      )}
+
+      {/* Popup konfirmasi logout */}
+      {showLogoutConfirm && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4">
+          <div className="w-full max-w-xs rounded-xl border border-line-2 bg-panel p-5 text-center">
+            <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-rose-600/15 text-rose-400">
+              <XCircle className="h-5 w-5" />
+            </div>
+            <h3 className="mt-2 text-sm font-bold text-white">Keluar akun?</h3>
+            <p className="mt-1 text-xs text-slate-400">
+              Kamu harus masuk lagi untuk melihat riwayat pesanan.
+            </p>
+            <div className="mt-4 flex gap-2">
+              <button
+                onClick={() => setShowLogoutConfirm(false)}
+                className="flex-1 rounded-lg border border-line-2 bg-panel-2 px-3 py-2 text-xs font-semibold text-slate-200 hover:bg-panel-3 transition"
+              >
+                Batal
+              </button>
+              <button
+                onClick={handleLogout}
+                className="flex-1 rounded-lg bg-rose-600 px-3 py-2 text-xs font-bold text-white hover:bg-rose-500 transition"
+              >
+                Ya, Keluar
+              </button>
+            </div>
           </div>
         </div>
       )}
