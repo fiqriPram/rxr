@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Game, Category } from "@/db/schema";
 import SafeImage from "./SafeImage";
-import { Search, Flame, X } from "lucide-react";
+import { Flame, X } from "lucide-react";
 
 interface GameGridProps {
   games: Game[];
@@ -91,42 +91,33 @@ export default function GameGrid({ games, categories }: GameGridProps) {
         </div>
       </div>
 
-      {/* Tabs + Search */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          {TABS.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => setSelectedTab(t.id)}
-              className={`rounded-lg px-5 py-2 text-sm font-bold transition border ${
-                selectedTab === t.id
-                  ? "bg-blue-600 border-blue-600 text-white"
-                  : "bg-panel border-line text-slate-300 hover:text-white hover:border-line-strong"
-              }`}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
-
-        <div className="relative w-full sm:w-64">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Cari game..."
-            className="w-full rounded-lg bg-field border border-line-2 py-2 pl-9 pr-8 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
-          />
-          {searchQuery && (
+      {/* Tabs */}
+      <div className="flex items-center gap-2">
+        {TABS.map((t) => (
+          <button
+            key={t.id}
+            onClick={() => setSelectedTab(t.id)}
+            className={`rounded-lg px-5 py-2 text-sm font-bold transition border ${
+              selectedTab === t.id
+                ? "bg-blue-600 border-blue-600 text-white"
+                : "bg-panel border-line text-slate-300 hover:text-white hover:border-line-strong"
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+        {searchQuery && (
+          <span className="flex items-center gap-1.5 rounded-lg bg-panel border border-line px-3 py-2 text-xs text-slate-300">
+            Hasil: “{searchQuery}”
             <button
               onClick={() => setSearchQuery("")}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white"
+              className="text-slate-500 hover:text-white"
+              aria-label="Hapus pencarian"
             >
-              <X className="h-4 w-4" />
+              <X className="h-3.5 w-3.5" />
             </button>
-          )}
-        </div>
+          </span>
+        )}
       </div>
 
       {/* Tile grid */}
