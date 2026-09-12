@@ -14,6 +14,12 @@ function appUrl(): string {
 export const auth = betterAuth({
   baseURL: appUrl(),
   secret: process.env.BETTER_AUTH_SECRET,
+  trustedOrigins: [
+    "https://rxr.my.id",
+    "http://localhost:3000",
+    process.env.NEXT_PUBLIC_APP_URL || "",
+    process.env.APP_URL || "",
+  ].filter(Boolean),
   database: drizzleAdapter(db, {
     provider: "pg",
     schema,
