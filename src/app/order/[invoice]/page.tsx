@@ -1,9 +1,6 @@
 import { notFound } from "next/navigation";
-import {
-  getTransactionByInvoice,
-  getPaymentMethods,
-  updateTransactionStatus,
-} from "@/db/repo";
+import { getTransactionByInvoice, getPaymentMethods } from "@/db/repo";
+import { expireStaleTransaction } from "@/lib/fulfill";
 import OrderClient from "./OrderClient";
 
 export const dynamic = "force-dynamic";
@@ -29,21 +26,8 @@ export default async function OrderPage({ params }: OrderPageProps) {
   }
 
   // Lazy expiry: order PENDING yang lewat batas waktu otomatis FAILED
-  if (transaction.status === "PENDING") {
-    const expiredAt = new Date(transaction.paymentDetails.expiredAt).getTime();
-    if (Number.isFinite(expiredAt) && Date.now() > expiredAt) {
-      await updateTransactionStatus(invoice, "FAILED", {
-        notes: (() => {
-          try {
-            const n = transaction.notes ? JSON.parse(transaction.notes) : {};
-            return JSON.stringify({ ...n, expired: true });
-          } catch {
-            return transaction.notes || undefined;
-          }
-        })(),
-      });
-      transaction = (await getTransactionByInvoice(invoice)) || transaction;
-    }
+  if (transaction.status === "PENDING" && (await expireStaleTransaction(invoice))) {
+    transaction = (await getTransactionByInvoice(invoice)) || transaction;
   }
 
   const paymentMethods = await getPaymentMethods();

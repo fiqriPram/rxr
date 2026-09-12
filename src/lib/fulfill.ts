@@ -21,6 +21,25 @@ export interface FulfillResult {
   tx: Transaction | null;
 }
 
+// Tandai FAILED bila order PENDING sudah lewat batas waktu (lazy expiry,
+// dipanggil dari server component agar tidak ada cronjob terpisah).
+// Return true bila status berubah.
+export async function expireStaleTransaction(invoice: string): Promise<boolean> {
+  const tx = await getTransactionByInvoice(invoice);
+  if (!tx || tx.status !== "PENDING") return false;
+  const expiredAt = new Date(tx.paymentDetails.expiredAt).getTime();
+  if (!Number.isFinite(expiredAt) || Date.now() <= expiredAt) return false;
+  let notes: string | undefined;
+  try {
+    const n = tx.notes ? JSON.parse(tx.notes) : {};
+    notes = JSON.stringify({ ...n, expired: true });
+  } catch {
+    notes = tx.notes || undefined;
+  }
+  await updateTransactionStatus(invoice, "FAILED", { notes });
+  return true;
+}
+
 // Cek status order yang sudah dikirim ke provider (status PROCESSING)
 export async function refreshVipaymentStatus(invoice: string): Promise<{
   done: boolean;
