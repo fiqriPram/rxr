@@ -115,11 +115,9 @@ export default async function HomePage() {
       </section>
 
       {/* Main Game Catalog Grid */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6">
-        <Suspense fallback={null}>
-          <GameGrid games={games} categories={categories} />
-        </Suspense>
-      </section>
+      <Suspense fallback={null}>
+        <GameGrid games={games} categories={categories} />
+      </Suspense>
 
       {/* Service Guarantees */}
       <section className="border-t border-line-soft py-10">

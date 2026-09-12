@@ -2,18 +2,34 @@
 
 import { useState, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { Game, Category } from "@/db/schema";
-import GameCard from "./GameCard";
-import { Search, Gamepad2, X } from "lucide-react";
+import SafeImage from "./SafeImage";
+import { Search, Flame, X } from "lucide-react";
 
 interface GameGridProps {
   games: Game[];
   categories: Category[];
 }
 
+// Tab ala foto: Top Up (mobile+pc), Voucher, Apps
+function tabOf(game: Game, categories: Category[]): string {
+  const cat = categories.find((c) => c.id === game.categoryId);
+  if (!cat) return "topup";
+  if (cat.slug === "voucher") return "voucher";
+  if (cat.slug === "apps") return "apps";
+  return "topup";
+}
+
+const TABS = [
+  { id: "topup", label: "Top Up" },
+  { id: "voucher", label: "Voucher" },
+  { id: "apps", label: "Apps" },
+];
+
 export default function GameGrid({ games, categories }: GameGridProps) {
   const searchParams = useSearchParams();
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedTab, setSelectedTab] = useState<string>("topup");
   const urlSearch = searchParams.get("search") || "";
   const [prevUrlSearch, setPrevUrlSearch] = useState(urlSearch);
   const [searchQuery, setSearchQuery] = useState(urlSearch);
@@ -21,110 +37,133 @@ export default function GameGrid({ games, categories }: GameGridProps) {
   if (urlSearch !== prevUrlSearch) {
     setPrevUrlSearch(urlSearch);
     setSearchQuery(urlSearch);
-    setSelectedCategory("all");
   }
+
+  const popularGames = useMemo(() => games.filter((g) => g.isPopular), [games]);
 
   const filteredGames = useMemo(() => {
     return games.filter((g) => {
-      const matchCategory =
-        selectedCategory === "all" || g.categoryId === selectedCategory;
+      const matchTab = tabOf(g, categories) === selectedTab;
       const matchSearch =
         searchQuery === "" ||
         g.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         g.developer.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchCategory && matchSearch;
+      return matchTab && matchSearch;
     });
-  }, [games, selectedCategory, searchQuery]);
+  }, [games, categories, selectedTab, searchQuery]);
 
   return (
-    <section className="space-y-4" id="katalog-game">
-      <div className="flex items-baseline justify-between">
-        <h2 className="text-base sm:text-lg font-bold text-white">
-          Katalog Game
+    <section id="katalog-game" className="mx-auto max-w-7xl px-4 sm:px-6 space-y-6">
+      {/* Populer Sekarang */}
+      <div>
+        <h2 className="flex items-center gap-1.5 text-lg sm:text-xl font-black tracking-wide text-white">
+          <Flame className="h-5 w-5 text-orange-500" fill="currentColor" />
+          POPULER SEKARANG!
         </h2>
-        <p className="text-xs text-slate-400">
-          {filteredGames.length} game tersedia
+        <p className="mt-0.5 text-xs sm:text-sm text-slate-400">
+          Berikut adalah beberapa produk yang paling populer saat ini.
         </p>
+
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {popularGames.map((game) => (
+            <Link
+              key={game.id}
+              href={`/topup/${game.slug}`}
+              className="group flex items-center gap-3 rounded-2xl border border-line bg-panel p-3 transition hover:border-line-strong"
+            >
+                <span className="h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-panel-2 p-1">
+                  <SafeImage
+                    src={game.thumbnailUrl}
+                    alt={game.name}
+                    className="h-full w-full object-contain"
+                  />
+                </span>
+              <span className="min-w-0">
+                <span className="block truncate text-sm sm:text-base font-bold text-white">
+                  {game.name}
+                </span>
+                <span className="block truncate text-xs text-slate-400">
+                  {game.developer}
+                </span>
+              </span>
+            </Link>
+          ))}
+        </div>
       </div>
 
-      {/* Category Pills & Search Bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-line-soft pb-3">
-        {/* Category Tabs */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
-          <button
-            onClick={() => setSelectedCategory("all")}
-            className={`rounded-lg px-4 py-1.5 text-xs font-bold transition whitespace-nowrap ${
-              selectedCategory === "all"
-                ? "bg-blue-600 text-white"
-                : "bg-panel-2 text-slate-300 hover:text-white border border-line"
-            }`}
-          >
-            Semua ({games.length})
-          </button>
-
-          {categories.map((cat) => {
-            const count = games.filter((g) => g.categoryId === cat.id).length;
-            return (
-              <button
-                key={cat.id}
-                onClick={() => setSelectedCategory(cat.id)}
-                className={`rounded-lg px-3 py-1.5 font-semibold transition whitespace-nowrap border ${
-                  selectedCategory === cat.id
-                    ? "bg-blue-600 text-white border-blue-600"
-                    : "bg-panel-2 text-slate-400 hover:text-white border-line"
-                }`}
-              >
-                {cat.name} ({count})
-              </button>
-            );
-          })}
+      {/* Tabs + Search */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          {TABS.map((t) => (
+            <button
+              key={t.id}
+              onClick={() => setSelectedTab(t.id)}
+              className={`rounded-lg px-5 py-2 text-sm font-bold transition border ${
+                selectedTab === t.id
+                  ? "bg-blue-600 border-blue-600 text-white"
+                  : "bg-panel border-line text-slate-300 hover:text-white hover:border-line-strong"
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
         </div>
 
-        {/* Search */}
-        <div className="relative w-full md:w-64">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
+        <div className="relative w-full sm:w-64">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Cari game..."
-            className="w-full rounded-lg border border-line-2 bg-field py-1.5 pl-8 pr-7 text-xs text-white placeholder-slate-400 focus:border-blue-500"
+            className="w-full rounded-lg bg-field border border-line-2 py-2 pl-9 pr-8 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery("")}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white"
             >
-              <X className="h-3.5 w-3.5" />
+              <X className="h-4 w-4" />
             </button>
           )}
         </div>
       </div>
 
-      {/* Grid of Games */}
+      {/* Tile grid */}
       {filteredGames.length > 0 ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3">
           {filteredGames.map((game) => (
-            <GameCard key={game.id} game={game} />
+              <Link
+                key={game.id}
+                href={`/topup/${game.slug}`}
+                title={game.name}
+                className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-panel transition hover:border-blue-500"
+              >
+                <span className="block aspect-[4/3] w-full overflow-hidden bg-panel-2 p-2">
+                  <SafeImage
+                    src={game.thumbnailUrl}
+                    alt={game.name}
+                    className="h-full w-full object-contain"
+                  />
+                </span>
+                <span className="block truncate px-2.5 py-2 text-center text-[11px] sm:text-xs font-bold text-white">
+                  {game.name}
+                </span>
+              </Link>
           ))}
         </div>
       ) : (
         <div className="rounded-2xl border border-line bg-panel p-10 text-center">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-panel-3 text-slate-300">
-            <Gamepad2 className="h-5 w-5" />
-          </div>
-          <h4 className="mt-3 text-sm font-bold text-white">Tidak ada game yang cocok</h4>
-          <p className="mt-1 text-xs text-slate-400">
-            Coba gunakan kata kunci pencarian yang lain.
-          </p>
+          <p className="text-sm font-bold text-white">Tidak ada game yang cocok</p>
+          <p className="mt-1 text-xs text-slate-400">Coba kata kunci lain.</p>
           <button
             onClick={() => {
-              setSelectedCategory("all");
+              setSelectedTab("topup");
               setSearchQuery("");
             }}
-            className="btn-primary mt-3 px-3 py-1.5 text-xs"
+            className="btn-primary mt-3 px-4 py-2 text-xs"
           >
-            Tampilkan Semua Game
+            Tampilkan Semua
           </button>
         </div>
       )}

@@ -49,7 +49,6 @@ export const VIPAYMENT_GAME_NAMES: Record<string, string[]> = {
   "ace-racer": ["Ace Racer"],
   "age-of-empires-mobile": ["Age of Empires Mobile"],
   "arena-breakout": ["Arena Breakout"],
-  "arena-breakout-infinite": ["Arena Breakout: Infinite (PC)"],
   "arena-of-valor": ["Arena of Valor"],
   "astral-guardians": ["Astral Guardians: Cyber Fantasy"],
   "be-the-king": ["Be The King"],
