@@ -3,10 +3,16 @@ import { getTransactionByInvoice, updateTransactionStatus } from "@/db/repo";
 import { verifyIpaymuCallback } from "@/lib/ipaymu";
 import { fulfillVipaymentOrder, refreshVipaymentStatus } from "@/lib/fulfill";
 import { packVipaymentNotes } from "@/lib/vipayment";
+import { clientKey, rateLimit } from "@/lib/rate-limit";
 
 // Notifikasi pembayaran iPaymu (JSON atau form-urlencoded POST, butuh URL publik).
 // Daftarkan URL ini sebagai notifyUrl (otomatis per transaksi).
 export async function POST(req: NextRequest) {
+  // Anti-spam: provider me-retry callback yang gagal, tapi request palsu
+  // beruntun dari satu IP tetap dibatasi.
+  if (!rateLimit(clientKey(req, "ipaymu-notif"), 60, 60 * 1000)) {
+    return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+  }
   try {
     const contentType = req.headers.get("content-type") || "";
     let raw: Record<string, unknown> = {};

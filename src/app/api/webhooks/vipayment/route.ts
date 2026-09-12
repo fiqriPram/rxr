@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAllTransactions } from "@/db/repo";
 import { extractVipaymentTrxId } from "@/lib/vipayment";
 import { refreshVipaymentStatus } from "@/lib/fulfill";
+import { clientKey, rateLimit } from "@/lib/rate-limit";
 
 // Webhook VIPayment game-feature.
 // Daftarkan URL ini di VIPayment: Profile -> Pengaturan API -> URL Callback:
@@ -45,6 +46,9 @@ function pickTrxid(p: Record<string, string>): string {
 }
 
 export async function POST(req: NextRequest) {
+  if (!rateLimit(clientKey(req, "vipayment-webhook"), 60, 60 * 1000)) {
+    return NextResponse.json({ ok: false }, { status: 429 });
+  }
   const payload = await parsePayload(req);
   const trxid = pickTrxid(payload);
 
