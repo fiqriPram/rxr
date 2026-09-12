@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ADMIN_COOKIE_NAME, createAdminSession } from "@/lib/admin-auth";
 import { clientKey, rateLimit } from "@/lib/rate-limit";
+import { adminLoginSchema } from "@/lib/validators";
 
 export async function POST(req: NextRequest) {
   if (!rateLimit(clientKey(req, "admin-login"), 10, 60 * 1000)) {
@@ -20,8 +21,8 @@ export async function POST(req: NextRequest) {
 
   let password = "";
   try {
-    const body = await req.json();
-    password = typeof body.password === "string" ? body.password : "";
+    const parsed = adminLoginSchema.safeParse(await req.json());
+    password = parsed.success ? parsed.data.password : "";
   } catch {
     password = "";
   }

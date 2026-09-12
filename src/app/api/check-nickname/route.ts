@@ -6,6 +6,7 @@ import {
   VIPAYMENT_NICKNAME_CODE,
 } from "@/lib/vipayment";
 import { clientKey, rateLimit } from "@/lib/rate-limit";
+import { nicknameSchema } from "@/lib/validators";
 
 export async function POST(req: NextRequest) {
   if (!rateLimit(clientKey(req, "check-nickname"), 30, 60 * 1000)) {
@@ -15,15 +16,14 @@ export async function POST(req: NextRequest) {
     );
   }
   try {
-    const body = await req.json();
-    const { gameSlug, userId, zoneId, server } = body;
-
-    if (!userId || typeof userId !== "string" || userId.trim().length < 3) {
+    const parsed = nicknameSchema.safeParse(await req.json());
+    if (!parsed.success) {
       return NextResponse.json(
         { success: false, error: "User ID tidak valid atau terlalu pendek (min. 3 karakter)" },
         { status: 400 }
       );
     }
+    const { gameSlug, userId, zoneId, server } = parsed.data;
 
     const cleanUserId = userId.trim();
     const zone = (zoneId || server || "").trim();

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { updateTransactionStatus, getTransactionByInvoice } from "@/db/repo";
+import { adminOrderStatusSchema } from "@/lib/validators";
 
 export async function PATCH(
   req: NextRequest,
@@ -7,13 +8,12 @@ export async function PATCH(
 ) {
   try {
     const { invoice } = await params;
-    const body = await req.json();
-    const { status } = body;
+    const parsed = adminOrderStatusSchema.safeParse(await req.json());
 
-    const validStatuses = ["PENDING", "PAID", "PROCESSING", "SUCCESS", "FAILED"];
-    if (!status || !validStatuses.includes(status)) {
+    if (!parsed.success) {
       return NextResponse.json({ success: false, error: "Status tidak valid" }, { status: 400 });
     }
+    const { status } = parsed.data;
 
     const updated = await updateTransactionStatus(invoice, status);
     if (!updated) {

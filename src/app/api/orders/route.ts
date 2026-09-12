@@ -10,6 +10,7 @@ import {
 } from "@/db/repo";
 import { generateInvoiceNumber, calculateFee } from "@/lib/utils";
 import { auth } from "@/lib/auth";
+import { orderSchema } from "@/lib/validators";
 import {
   IPAYMU_PAYMENT_MAP,
   createIpaymuPayment,
@@ -20,7 +21,13 @@ import { packVipaymentNotes } from "@/lib/vipayment";
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
+    const parsed = orderSchema.safeParse(await req.json());
+    if (!parsed.success) {
+      return NextResponse.json(
+        { success: false, error: "Data pesanan tidak valid." },
+        { status: 400 }
+      );
+    }
     const {
       gameSlug,
       itemId,
@@ -29,14 +36,7 @@ export async function POST(req: NextRequest) {
       customerPhone,
       customerEmail,
       promoCode,
-    } = body;
-
-    if (!gameSlug || !itemId || !paymentMethodId || !accountData?.userId || !customerPhone) {
-      return NextResponse.json(
-        { success: false, error: "Data pesanan tidak lengkap." },
-        { status: 400 }
-      );
-    }
+    } = parsed.data;
 
     const game = await getGameBySlug(gameSlug);
     if (!game) {
