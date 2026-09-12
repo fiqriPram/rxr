@@ -1,18 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getUserById } from "@/db/repo";
-import { USER_COOKIE_NAME, verifyUserSession } from "@/lib/user-auth";
+import { auth } from "@/lib/auth";
 
 export async function GET(req: NextRequest) {
-  const session = await verifyUserSession(req.cookies.get(USER_COOKIE_NAME)?.value);
-  if (!session) {
+  const session = await auth.api.getSession({ headers: req.headers });
+  if (!session?.user) {
     return NextResponse.json({ success: true, data: null });
   }
-  const user = await getUserById(session.userId);
-  if (!user) {
-    return NextResponse.json({ success: true, data: null });
-  }
+  const u = session.user as typeof session.user & { phone?: string | null };
   return NextResponse.json({
     success: true,
-    data: { id: user.id, name: user.name, email: user.email, phone: user.phone },
+    data: { id: u.id, name: u.name, email: u.email, phone: u.phone ?? null },
   });
 }

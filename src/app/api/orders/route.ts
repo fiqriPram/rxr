@@ -9,7 +9,7 @@ import {
   getTransactionsByPhone,
 } from "@/db/repo";
 import { generateInvoiceNumber, calculateFee } from "@/lib/utils";
-import { USER_COOKIE_NAME, verifyUserSession } from "@/lib/user-auth";
+import { auth } from "@/lib/auth";
 import {
   IPAYMU_PAYMENT_MAP,
   createIpaymuPayment,
@@ -104,8 +104,11 @@ export async function POST(req: NextRequest) {
         );
       }
 
-      // VA/cstore -> nomor bayar; QRIS/ewallet -> halaman pembayaran iPaymu
-      if (payment.paymentNo) vaNumber = payment.paymentNo;
+      // VA/cstore -> nomor bayar; QRIS/ewallet -> halaman pembayaran iPaymu.
+      // (PaymentNo QRIS sandbox berisi teks demo, jangan ditampilkan sebagai nomor.)
+      if (payment.paymentNo && (channel.paymentMethod === "va" || channel.paymentMethod === "cstore")) {
+        vaNumber = payment.paymentNo;
+      }
       providerNotes = {
         ipaymuPayment: paymentMethod.code,
         ipaymuChannel: channel.paymentChannel,
@@ -134,10 +137,10 @@ export async function POST(req: NextRequest) {
       vaNumber = paymentMethod.accountNumber || `RXR-${Math.floor(10000000 + Math.random() * 90000000)}`;
     }
 
-    const session = await verifyUserSession(req.cookies.get(USER_COOKIE_NAME)?.value);
+    const session = await auth.api.getSession({ headers: req.headers });
 
     const tx = await createTransaction({
-      userId: session?.userId,
+      userId: session?.user.id,
       invoiceNumber,
       gameId: game.id,
       gameName: game.name,
@@ -151,7 +154,7 @@ export async function POST(req: NextRequest) {
         server: accountData.server,
         nickname: accountData.nickname || "Gamer_" + accountData.userId,
       },
-      customerPhone: customerPhone.trim(),
+      customerPhone: customerPhone.replace(/[^0-9]/g, ""),
       customerEmail: customerEmail?.trim() || undefined,
       subtotal,
       fee,
@@ -191,14 +194,14 @@ export async function GET(req: NextRequest) {
 
     // Anti-intip: riwayat per nomor HP hanya untuk pemiliknya yang login.
     // Tamu tetap bisa lacak via nomor invoice di /order/[invoice].
-    const session = await verifyUserSession(req.cookies.get(USER_COOKIE_NAME)?.value);
-    if (!session) {
+    const session = await auth.api.getSession({ headers: req.headers });
+    if (!session?.user) {
       return NextResponse.json(
         { success: false, error: "Silakan masuk untuk melihat riwayat pesanan." },
         { status: 401 }
       );
     }
-    const user = await getUserById(session.userId);
+    const user = await getUserById(session.user.id);
     const ownerPhone = (user?.phone || "").replace(/[^0-9]/g, "");
     const queryPhone = phone.replace(/[^0-9]/g, "");
     if (!ownerPhone || ownerPhone !== queryPhone) {

@@ -8,8 +8,8 @@ export async function getUserByEmail(email: string): Promise<User | null> {
     try {
       const data = await db
         .select()
-        .from(schema.users)
-        .where(eq(schema.users.email, email.toLowerCase().trim()))
+        .from(schema.user)
+        .where(eq(schema.user.email, email.toLowerCase().trim()))
         .limit(1);
       if (data.length > 0) return data[0];
     } catch (e) {
@@ -22,37 +22,13 @@ export async function getUserByEmail(email: string): Promise<User | null> {
 export async function getUserById(id: string): Promise<User | null> {
   if (isDatabaseConfigured && db) {
     try {
-      const data = await db.select().from(schema.users).where(eq(schema.users.id, id)).limit(1);
+      const data = await db.select().from(schema.user).where(eq(schema.user.id, id)).limit(1);
       if (data.length > 0) return data[0];
     } catch (e) {
       console.warn("Neon DB query failed:", e);
     }
   }
   return null;
-}
-
-export async function createUser(data: {
-  name: string;
-  email: string;
-  phone?: string;
-  passwordHash: string;
-}): Promise<User | null> {
-  if (!isDatabaseConfigured || !db) return null;
-  const user: User = {
-    id: `usr-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`,
-    name: data.name,
-    email: data.email.toLowerCase().trim(),
-    phone: data.phone?.trim() || null,
-    passwordHash: data.passwordHash,
-    createdAt: new Date(),
-  };
-  try {
-    await db.insert(schema.users).values(user);
-    return user;
-  } catch (e) {
-    console.warn("Neon DB insert user failed:", e);
-    return null;
-  }
 }
 
 export async function getTransactionsByUserId(userId: string): Promise<Transaction[]> {

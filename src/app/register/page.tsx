@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { User, Mail, Phone, Lock, Loader2, UserPlus } from "lucide-react";
+import { signUp } from "@/lib/auth-client";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -19,17 +20,23 @@ export default function RegisterPage() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone, password }),
+      const res = await signUp.email({
+        name,
+        email,
+        password,
+        // @ts-expect-error additional field (phone) terdaftar di auth config
+        phone: phone || undefined,
       });
-      const data = await res.json();
-      if (data.success) {
+      if (res.error) {
+        const msg = res.error.message || "";
+        setError(
+          /already exists|terdaftar/i.test(msg)
+            ? "Email sudah terdaftar. Silakan masuk."
+            : msg || "Gagal mendaftar."
+        );
+      } else {
         router.push("/");
         router.refresh();
-      } else {
-        setError(data.error || "Gagal mendaftar.");
       }
     } catch {
       setError("Gangguan jaringan. Coba lagi.");

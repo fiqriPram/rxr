@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Mail, Lock, Loader2, LogIn } from "lucide-react";
+import { signIn } from "@/lib/auth-client";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -17,17 +18,16 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await res.json();
-      if (data.success) {
+      const res = await signIn.email({ email, password });
+      if (res.error) {
+        setError(
+          res.error.message === "Invalid email or password"
+            ? "Email atau password salah."
+            : res.error.message || "Gagal masuk."
+        );
+      } else {
         router.push("/");
         router.refresh();
-      } else {
-        setError(data.error || "Gagal masuk.");
       }
     } catch {
       setError("Gangguan jaringan. Coba lagi.");

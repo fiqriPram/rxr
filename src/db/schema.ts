@@ -1,5 +1,8 @@
 import { pgTable, text, varchar, integer, boolean, timestamp, jsonb, numeric } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
+import { user, session, account, verification } from "./auth-schema";
+
+export { user, session, account, verification };
 
 export const categories = pgTable("categories", {
   id: text("id").primaryKey(),
@@ -73,19 +76,10 @@ export const promoCodes = pgTable("promo_codes", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-export const users = pgTable("users", {
-  id: text("id").primaryKey(),
-  name: varchar("name", { length: 100 }).notNull(),
-  email: varchar("email", { length: 100 }).notNull().unique(),
-  phone: varchar("phone", { length: 50 }),
-  passwordHash: text("password_hash").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-});
-
 export const transactions = pgTable("transactions", {
   id: text("id").primaryKey(),
   invoiceNumber: varchar("invoice_number", { length: 50 }).notNull().unique(),
-  userId: text("user_id").references(() => users.id),
+  userId: text("user_id").references(() => user.id),
   gameId: text("game_id").references(() => games.id).notNull(),
   gameName: varchar("game_name", { length: 150 }).notNull(),
   itemId: text("item_id").references(() => items.id).notNull(),
@@ -119,7 +113,7 @@ export const transactions = pgTable("transactions", {
 });
 
 export type Category = typeof categories.$inferSelect;
-export type User = typeof users.$inferSelect;
+export type User = typeof user.$inferSelect;
 export type Game = typeof games.$inferSelect;
 export type Item = typeof items.$inferSelect;
 export type PaymentMethod = typeof paymentMethods.$inferSelect;

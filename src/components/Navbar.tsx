@@ -38,7 +38,8 @@ export default function Navbar() {
   }, []);
 
   const handleLogout = async () => {
-    await fetch("/api/auth/login", { method: "DELETE" });
+    const { signOut } = await import("@/lib/auth-client");
+    await signOut();
     setAuthUser(null);
     router.refresh();
   };
