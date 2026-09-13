@@ -23,20 +23,18 @@ interface OrderClientProps {
   initialTransaction: Transaction;
   instructions: string[];
   paymentMethodType: string;
-  allowSandbox?: boolean;
 }
 
 export default function OrderClient({
   initialTransaction,
   instructions,
   paymentMethodType,
-  allowSandbox = false,
 }: OrderClientProps) {
   const [transaction, setTransaction] = useState<Transaction>(initialTransaction);
   const [copiedVa, setCopiedVa] = useState(false);
   const [copiedTotal, setCopiedTotal] = useState(false);
   const [copiedInvoice, setCopiedInvoice] = useState(false);
-  const [isSimulating, setIsSimulating] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
   const isSuccess = transaction.status === "SUCCESS";
@@ -83,10 +81,10 @@ export default function OrderClient({
   };
 
   const handlePaymentAction = async () => {
-    setIsSimulating(true);
+    setIsRefreshing(true);
     setErrorMsg("");
     try {
-      const res = await fetch(`/api/orders/${transaction.invoiceNumber}/simulate`, {
+      const res = await fetch(`/api/orders/${transaction.invoiceNumber}/refresh`, {
         method: "POST",
       });
       const data = await res.json();
@@ -98,7 +96,7 @@ export default function OrderClient({
     } catch {
       alert("Gagal memproses permintaan");
     } finally {
-      setIsSimulating(false);
+      setIsRefreshing(false);
     }
   };
 
@@ -379,29 +377,24 @@ export default function OrderClient({
         )}
       </div>
 
-      {/* Developer / Testing Sandbox Bar — hanya tampil di non-production.
-          Di production, tombol "Periksa Status" tetap tampil untuk order PROCESSING. */}
-      {(isProcessing || (isPending && allowSandbox)) && (
+      {/* Status Bar — hanya tampil untuk order PROCESSING. */}
+      {isProcessing && (
         <div className="rounded-lg border border-dashed border-line-strong bg-field-2 p-3 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-400">
           <div className="flex items-center gap-2">
             <FlaskConical className="h-4 w-4 text-amber-400 shrink-0" />
             <span>
-              {isProcessing
-                ? "Item sedang diproses provider. Klik untuk memeriksa status pengiriman."
-                : "Mode Sandbox: Konfirmasi pembayaran untuk pengujian alur."}
+              Item sedang diproses provider. Klik untuk memeriksa status pengiriman.
             </span>
           </div>
           <button
             onClick={handlePaymentAction}
-            disabled={isSimulating}
+            disabled={isRefreshing}
             className="rounded bg-panel-3 border border-line-strong px-3 py-1 text-xs font-semibold text-amber-400 hover:bg-panel-4 transition disabled:opacity-50"
           >
-            {isSimulating ? (
+            {isRefreshing ? (
               "Memproses..."
-            ) : isProcessing ? (
-              "Periksa Status Pesanan"
             ) : (
-              "Konfirmasi Pembayaran"
+              "Periksa Status Pesanan"
             )}
           </button>
         </div>

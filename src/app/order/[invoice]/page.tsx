@@ -38,7 +38,6 @@ export default async function OrderPage({ params }: OrderPageProps) {
       initialTransaction={transaction}
       instructions={paymentMethod?.instructions || []}
       paymentMethodType={paymentMethod?.type || "QRIS"}
-      allowSandbox={process.env.NODE_ENV !== "production"}
     />
   );
 }
