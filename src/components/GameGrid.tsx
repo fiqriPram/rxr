@@ -159,7 +159,7 @@ export default function GameGrid({ games, categories }: GameGridProps) {
                 }
                 className="rounded-xl border border-line bg-panel px-6 py-2.5 text-sm font-bold text-white transition hover:border-blue-500"
               >
-                Muat Lebih Banyak ({filteredGames.length - visibleCount} lagi)
+                Muat Lebih Banyak
               </button>
               <p className="text-xs text-slate-500">
                 Menampilkan {Math.min(visibleCount, filteredGames.length)} dari {filteredGames.length} game
