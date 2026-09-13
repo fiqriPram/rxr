@@ -167,11 +167,17 @@ export default function HeroBanner({ slides }: HeroBannerProps) {
       </div>
 
       {/* Ticker / Running Announcement */}
-      <div className="flex items-center gap-2.5 rounded-lg border border-amber-500/25 bg-amber-500/5 px-3.5 py-2.5 text-xs">
+      <div className="flex items-center gap-2.5 overflow-hidden rounded-lg border border-amber-500/25 bg-amber-500/5 px-3.5 py-2.5 text-xs">
         <Volume2 className="h-4 w-4 text-amber-300 shrink-0" />
-        <div className="flex-1 overflow-hidden whitespace-nowrap">
-          <span className="font-bold text-amber-200 mr-2 tracking-wide">[INFO RESMI]:</span>
-          <span className="font-medium text-slate-100">Semua transaksi berjalan normal 24 jam nonstop • Garansi diamond masuk 1-3 detik via server distributor resmi.</span>
+        <div className="flex-1 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_1.5rem,black_calc(100%-1.5rem),transparent)]">
+          <div className="animate-marquee flex w-max items-center gap-8 whitespace-nowrap">
+            {[0, 1].map((n) => (
+              <span key={n} aria-hidden={n === 1}>
+                <span className="font-bold text-amber-200 mr-2 tracking-wide">[INFO RESMI]:</span>
+                <span className="font-medium text-slate-100">Semua transaksi berjalan normal 24 jam nonstop • Garansi diamond masuk 1-3 detik via server distributor resmi.</span>
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </div>
