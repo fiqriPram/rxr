@@ -64,27 +64,23 @@ export default function GameGrid({ games, categories }: GameGridProps) {
           Berikut adalah beberapa produk yang paling populer saat ini.
         </p>
 
-        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="mt-4 grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3">
           {popularGames.map((game) => (
             <Link
               key={game.id}
               href={`/topup/${game.slug}`}
-              className="group flex items-center gap-3 rounded-2xl border border-line bg-panel p-3 transition hover:border-line-strong"
+              title={game.name}
+              className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-panel transition hover:border-blue-500"
             >
-                <span className="h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-panel-2 p-1">
-                  <SafeImage
-                    src={game.thumbnailUrl}
-                    alt={game.name}
-                    className="h-full w-full object-contain"
-                  />
-                </span>
-              <span className="min-w-0">
-                <span className="block truncate text-sm sm:text-base font-bold text-white">
-                  {game.name}
-                </span>
-                <span className="block truncate text-xs text-slate-400">
-                  {game.developer}
-                </span>
+              <span className="block aspect-[4/3] w-full overflow-hidden bg-panel-2 p-2">
+                <SafeImage
+                  src={game.thumbnailUrl}
+                  alt={game.name}
+                  className="h-full w-full object-contain"
+                />
+              </span>
+              <span className="block truncate px-2.5 py-2 text-center text-[11px] sm:text-xs font-bold text-white">
+                {game.name}
               </span>
             </Link>
           ))}
