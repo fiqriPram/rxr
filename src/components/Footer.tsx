@@ -52,7 +52,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/lacak" className="hover:text-white transition">
-                  Lacak Pesanan
+                  Cek Transaksi
                 </Link>
               </li>
               <li>

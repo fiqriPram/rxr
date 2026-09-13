@@ -89,7 +89,7 @@ export default function TrackOrderPage() {
     <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6 space-y-6">
       <div className="text-center space-y-1">
         <h1 className="text-xl sm:text-2xl font-bold text-white">
-          Lacak Pesanan
+          Cek Transaksi
         </h1>
         <p className="text-xs text-slate-400">
           {loggedName

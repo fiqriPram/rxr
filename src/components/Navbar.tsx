@@ -90,7 +90,7 @@ export default function Navbar() {
               className="flex items-center gap-1.5 text-slate-300 hover:text-blue-400 transition-colors"
             >
               <Receipt className="h-3.5 w-3.5 text-blue-400" />
-              Lacak Pesanan
+              Cek Transaksi
             </Link>
           </nav>
         </div>
@@ -205,7 +205,7 @@ export default function Navbar() {
               onClick={() => setMobileMenuOpen(false)}
               className="block rounded-lg px-3 py-2 text-slate-200 hover:bg-panel-2"
             >
-              Lacak Pesanan
+              Cek Transaksi
             </Link>
             {authUser ? (
               <button
