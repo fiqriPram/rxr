@@ -185,7 +185,7 @@ export default function HeroBanner({ slides }: HeroBannerProps) {
             {[0, 1].map((n) => (
               <span key={n} aria-hidden={n === 1}>
                 <span className="font-bold text-amber-200 mr-2 tracking-wide">[INFO RESMI]:</span>
-                <span className="font-medium text-slate-100">Semua transaksi berjalan normal 24 jam nonstop • Garansi diamond masuk 1-3 detik via server distributor resmi.</span>
+                <span className="font-medium text-slate-100">Semua transaksi berjalan normal 24 jam nonstop • Garansi diamond masuk 1-3 detik.</span>
               </span>
             ))}
           </div>
