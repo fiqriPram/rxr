@@ -9,7 +9,6 @@ import {
   Headphones,
   Menu,
   X,
-  Sparkles,
   User,
   LogOut,
   XCircle,
@@ -69,30 +68,6 @@ export default function Navbar() {
               </span>
             </div>
           </Link>
-
-          {/* Desktop Nav Links */}
-          <nav className="hidden lg:flex items-center gap-5 text-xs font-semibold">
-            <Link
-              href="/#katalog-game"
-              className="text-slate-300 hover:text-white transition-colors"
-            >
-              Semua Game
-            </Link>
-            <Link
-              href="/#promo-section"
-              className="flex items-center gap-1 text-slate-300 hover:text-amber-400 transition-colors"
-            >
-              <Sparkles className="h-3.5 w-3.5 text-amber-400" />
-              Promo Spesial
-            </Link>
-            <Link
-              href="/lacak"
-              className="flex items-center gap-1.5 text-slate-300 hover:text-blue-400 transition-colors"
-            >
-              <Receipt className="h-3.5 w-3.5 text-blue-400" />
-              Cek Transaksi
-            </Link>
-          </nav>
         </div>
 
         {/* Center: Global Quick Search */}
