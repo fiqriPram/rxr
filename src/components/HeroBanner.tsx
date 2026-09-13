@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, Zap, Volume2 } from "lucide-react";
 
@@ -39,6 +39,7 @@ const tintBadge: Record<HeroSlide["tint"], string> = {
 export default function HeroBanner({ slides }: HeroBannerProps) {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
+  const touchStartX = useRef<number | null>(null);
 
   useEffect(() => {
     if (paused) return;
@@ -57,6 +58,16 @@ export default function HeroBanner({ slides }: HeroBannerProps) {
         className="relative h-[240px] sm:h-[300px] lg:h-[340px] overflow-hidden rounded-xl border border-line bg-panel"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
+        onTouchStart={(e) => {
+          touchStartX.current = e.touches[0].clientX;
+        }}
+        onTouchEnd={(e) => {
+          if (touchStartX.current === null) return;
+          const dx = e.changedTouches[0].clientX - touchStartX.current;
+          touchStartX.current = null;
+          if (Math.abs(dx) < 40) return;
+          go(current + (dx < 0 ? 1 : -1));
+        }}
       >
         {slides.map((slide, idx) => {
           const active = idx === current;
@@ -152,14 +163,14 @@ export default function HeroBanner({ slides }: HeroBannerProps) {
         {/* Arrow Navigation */}
         <button
           onClick={() => go(current - 1)}
-          className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-1.5 text-slate-200 hover:bg-black/70 hover:text-white transition"
+          className="absolute left-2 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/40 p-1.5 text-slate-200 hover:bg-black/70 hover:text-white transition"
           aria-label="Slide sebelumnya"
         >
           <ChevronLeft className="h-4 w-4" />
         </button>
         <button
           onClick={() => go(current + 1)}
-          className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-1.5 text-slate-200 hover:bg-black/70 hover:text-white transition"
+          className="absolute right-2 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/40 p-1.5 text-slate-200 hover:bg-black/70 hover:text-white transition"
           aria-label="Slide berikutnya"
         >
           <ChevronRight className="h-4 w-4" />

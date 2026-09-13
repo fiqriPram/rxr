@@ -161,9 +161,6 @@ export default function GameGrid({ games, categories }: GameGridProps) {
               >
                 Muat Lebih Banyak
               </button>
-              <p className="text-xs text-slate-500">
-                Menampilkan {Math.min(visibleCount, filteredGames.length)} dari {filteredGames.length} game
-              </p>
             </div>
           )}
         </>
