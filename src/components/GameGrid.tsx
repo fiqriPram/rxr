@@ -27,16 +27,21 @@ const TABS = [
   { id: "apps", label: "Apps" },
 ];
 
+// Jumlah game per halaman katalog
+const PAGE_SIZE = 12;
+
 export default function GameGrid({ games, categories }: GameGridProps) {
   const searchParams = useSearchParams();
   const [selectedTab, setSelectedTab] = useState<string>("topup");
   const urlSearch = searchParams.get("search") || "";
   const [prevUrlSearch, setPrevUrlSearch] = useState(urlSearch);
   const [searchQuery, setSearchQuery] = useState(urlSearch);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   if (urlSearch !== prevUrlSearch) {
     setPrevUrlSearch(urlSearch);
     setSearchQuery(urlSearch);
+    setVisibleCount(PAGE_SIZE);
   }
 
   const popularGames = useMemo(() => games.filter((g) => g.isPopular), [games]);
@@ -92,7 +97,10 @@ export default function GameGrid({ games, categories }: GameGridProps) {
         {TABS.map((t) => (
           <button
             key={t.id}
-            onClick={() => setSelectedTab(t.id)}
+            onClick={() => {
+              setSelectedTab(t.id);
+              setVisibleCount(PAGE_SIZE);
+            }}
             className={`rounded-lg px-5 py-2 text-sm font-bold transition border ${
               selectedTab === t.id
                 ? "bg-blue-600 border-blue-600 text-white"
@@ -106,7 +114,10 @@ export default function GameGrid({ games, categories }: GameGridProps) {
           <span className="flex items-center gap-1.5 rounded-lg bg-panel border border-line px-3 py-2 text-xs text-slate-300">
             Hasil: “{searchQuery}”
             <button
-              onClick={() => setSearchQuery("")}
+              onClick={() => {
+                setSearchQuery("");
+                setVisibleCount(PAGE_SIZE);
+              }}
               className="text-slate-500 hover:text-white"
               aria-label="Hapus pencarian"
             >
@@ -118,8 +129,9 @@ export default function GameGrid({ games, categories }: GameGridProps) {
 
       {/* Tile grid */}
       {filteredGames.length > 0 ? (
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3">
-          {filteredGames.map((game) => (
+        <>
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3">
+            {filteredGames.slice(0, visibleCount).map((game) => (
               <Link
                 key={game.id}
                 href={`/topup/${game.slug}`}
@@ -137,8 +149,24 @@ export default function GameGrid({ games, categories }: GameGridProps) {
                   {game.name}
                 </span>
               </Link>
-          ))}
-        </div>
+            ))}
+          </div>
+          {visibleCount < filteredGames.length && (
+            <div className="flex flex-col items-center gap-1.5 pt-1">
+              <button
+                onClick={() =>
+                  setVisibleCount((c) => c + PAGE_SIZE)
+                }
+                className="rounded-xl border border-line bg-panel px-6 py-2.5 text-sm font-bold text-white transition hover:border-blue-500"
+              >
+                Muat Lebih Banyak ({filteredGames.length - visibleCount} lagi)
+              </button>
+              <p className="text-xs text-slate-500">
+                Menampilkan {Math.min(visibleCount, filteredGames.length)} dari {filteredGames.length} game
+              </p>
+            </div>
+          )}
+        </>
       ) : (
         <div className="rounded-2xl border border-line bg-panel p-10 text-center">
           <p className="text-sm font-bold text-white">Tidak ada game yang cocok</p>
@@ -147,6 +175,7 @@ export default function GameGrid({ games, categories }: GameGridProps) {
             onClick={() => {
               setSelectedTab("topup");
               setSearchQuery("");
+              setVisibleCount(PAGE_SIZE);
             }}
             className="btn-primary mt-3 px-4 py-2 text-xs"
           >
