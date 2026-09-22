@@ -9,7 +9,7 @@ const contacts = [
   {
     icon: Phone,
     label: "WhatsApp (CS 24 Jam)",
-    value: "0857-5433-5542",
+    value: "+62 857-5433-5542",
     href: "https://wa.me/6285754335542",
   },
   {
@@ -21,7 +21,7 @@ const contacts = [
   {
     icon: MapPin,
     label: "Alamat Usaha",
-    value: "Jl. Contoh No. 123, Jakarta, Indonesia",
+    value: "Jl. Trans Kalimantan Handil Bakti, Barito Kuala, Kalimantan Selatan",
     href: undefined,
   },
   {
