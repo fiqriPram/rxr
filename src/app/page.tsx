@@ -16,12 +16,38 @@ export const dynamic = "force-dynamic";
 const HERO_ORDER: {
   slug: string;
   badge: string;
+  headline: string;
+  sub: string;
   tint: HeroSlide["tint"];
 }[] = [
-  { slug: "mobile-legends", badge: "EVENT PROMO", tint: "blue" },
-  { slug: "free-fire", badge: "TOP UP BOOYAH", tint: "emerald" },
-  { slug: "genshin-impact", badge: "RESMI HOYOVERSE", tint: "indigo" },
-  { slug: "valorant", badge: "RANKED READY", tint: "rose" },
+  {
+    slug: "mobile-legends",
+    badge: "FLASH SALE",
+    headline: "Diamond MLBB Instan",
+    sub: "Isi diamond kapan saja — masuk ke akun dalam hitungan detik, tanpa antre.",
+    tint: "blue",
+  },
+  {
+    slug: "free-fire",
+    badge: "HARGA BERSAHABAT",
+    headline: "Diamond Free Fire",
+    sub: "Booyah makin mudah: top up cepat dan bayar pakai metode apa saja.",
+    tint: "emerald",
+  },
+  {
+    slug: "genshin-impact",
+    badge: "RESMI & AMAN",
+    headline: "Genesis Crystal",
+    sub: "Top up langsung via UID. Aman untuk akunmu dan bergaransi penuh.",
+    tint: "indigo",
+  },
+  {
+    slug: "valorant",
+    badge: "SIAP MAIN",
+    headline: "Valorant Points",
+    sub: "Amankan skin incaranmu sebelum match berikutnya dimulai.",
+    tint: "rose",
+  },
 ];
 
 export default async function HomePage() {
@@ -55,8 +81,8 @@ export default async function HomePage() {
     return {
       id: i + 1,
       badge: HERO_ORDER[i].badge,
-      title: game!.name,
-      subtitle: game!.description || game!.name,
+      title: HERO_ORDER[i].headline,
+      subtitle: HERO_ORDER[i].sub,
       tag: minPrice > 0 ? `Mulai ${formatRupiah(minPrice)}` : "Lihat Harga",
       linkText: "Top Up Sekarang",
       href: `/topup/${game!.slug}`,
@@ -123,7 +149,7 @@ export default async function HomePage() {
       <section className="border-t border-line-soft py-10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <h3 className="mb-4 text-base font-bold text-white text-center">
-            Kenapa Top Up di RXR?
+            Kenapa Belanja di RXR?
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <div className="flex items-start gap-3 rounded-xl border border-line bg-panel p-4">
@@ -131,8 +157,8 @@ export default async function HomePage() {
                 <Zap className="h-4 w-4" />
               </div>
               <div>
-                <h4 className="text-xs font-bold text-white">Pengiriman Instan</h4>
-                <p className="text-[11px] text-slate-400 mt-0.5">Diamond masuk 1-3 detik</p>
+                <h4 className="text-xs font-bold text-white">Kirim Otomatis</h4>
+                <p className="text-[11px] text-slate-400 mt-0.5">Item masuk sesaat setelah bayar</p>
               </div>
             </div>
 
@@ -141,8 +167,8 @@ export default async function HomePage() {
                 <ShieldCheck className="h-4 w-4" />
               </div>
               <div>
-                <h4 className="text-xs font-bold text-white">100% Resmi & Legal</h4>
-                <p className="text-[11px] text-slate-400 mt-0.5">Langsung dari publisher</p>
+                <h4 className="text-xs font-bold text-white">Stok Resmi</h4>
+                <p className="text-[11px] text-slate-400 mt-0.5">Dari jalur distributor resmi</p>
               </div>
             </div>
 
@@ -151,8 +177,8 @@ export default async function HomePage() {
                 <CreditCard className="h-4 w-4" />
               </div>
               <div>
-                <h4 className="text-xs font-bold text-white">Pembayaran Lengkap</h4>
-                <p className="text-[11px] text-slate-400 mt-0.5">QRIS, VA Bank & E-Wallet</p>
+                <h4 className="text-xs font-bold text-white">Bayar Fleksibel</h4>
+                <p className="text-[11px] text-slate-400 mt-0.5">QRIS, virtual account & e-wallet</p>
               </div>
             </div>
 
@@ -161,8 +187,8 @@ export default async function HomePage() {
                 <Headphones className="h-4 w-4" />
               </div>
               <div>
-                <h4 className="text-xs font-bold text-white">Bantuan CS 24 Jam</h4>
-                <p className="text-[11px] text-slate-400 mt-0.5">Siap bantu kendala Anda</p>
+                <h4 className="text-xs font-bold text-white">CS Siaga</h4>
+                <p className="text-[11px] text-slate-400 mt-0.5">Tim kami siap membantu kapan pun</p>
               </div>
             </div>
           </div>
@@ -179,14 +205,14 @@ export default async function HomePage() {
           <div className="rounded-xl border border-line bg-panel p-4">
             <span className="font-bold text-white">Berapa lama proses pengisian top-up?</span>
             <p className="text-slate-400 mt-1 leading-relaxed">
-              Setelah pembayaran selesai dan terverifikasi oleh sistem, diamond/voucher akan masuk secara otomatis dalam kurun waktu 1 hingga 3 detik.
+              Begitu pembayaranmu terverifikasi, item langsung dikirim otomatis ke akun — biasanya hanya butuh beberapa detik.
             </p>
           </div>
 
           <div className="rounded-xl border border-line bg-panel p-4">
             <span className="font-bold text-white">Apakah diamond dan voucher ini legal?</span>
             <p className="text-slate-400 mt-1 leading-relaxed">
-              Semua produk di RXR diisi melalui jalur API distributor resmi publisher game terkait sehingga dijamin 100% legal dan aman dari banned.
+              Ya. Semua produk RXR diambil dari jalur distributor resmi, jadi akunmu tetap aman.
             </p>
           </div>
         </div>
