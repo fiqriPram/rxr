@@ -40,9 +40,9 @@ export default function TopUpForm({ game, items, paymentMethods }: TopUpFormProp
   const [nickDemo, setNickDemo] = useState(false);
 
   // Selections
-  const [selectedItem, setSelectedItem] = useState<Item | null>(items[0] || null);
+  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [selectedPayment, setSelectedPayment] = useState<PaymentMethod | null>(
-    paymentMethods[0] || null
+    null
   );
 
   // Customer contact & Promo
