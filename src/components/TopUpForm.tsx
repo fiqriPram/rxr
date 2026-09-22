@@ -579,7 +579,7 @@ export default function TopUpForm({ game, items, paymentMethods }: TopUpFormProp
             type="button"
             onClick={handleOrderSubmit}
             disabled={!selectedItem || !selectedPayment}
-            className="rounded-xl bg-blue-600 px-6 py-3 text-xs sm:text-sm font-bold text-white hover:bg-blue-500 transition disabled:opacity-40 disabled:pointer-events-none"
+            className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-3 text-xs sm:text-sm font-bold text-white hover:bg-blue-500 transition disabled:opacity-40 disabled:pointer-events-none"
           >
             <span>Beli Sekarang</span>
             <ArrowRight className="h-4 w-4" />
