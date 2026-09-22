@@ -20,42 +20,43 @@ interface HeroBannerProps {
   slides: HeroSlide[];
 }
 
-const tintOverlay: Record<HeroSlide["tint"], string> = {
-  blue: "from-black/70 via-black/30 to-transparent",
-  indigo: "from-black/70 via-black/30 to-transparent",
-  emerald: "from-black/70 via-black/30 to-transparent",
-  rose: "from-black/70 via-black/30 to-transparent",
-  amber: "from-black/70 via-black/30 to-transparent",
-};
-
-const tintBadge: Record<HeroSlide["tint"], string> = {
-  blue: "bg-blue-600",
-  indigo: "bg-indigo-600",
-  emerald: "bg-emerald-600",
-  rose: "bg-rose-600",
-  amber: "bg-amber-600",
+const tintCard: Record<HeroSlide["tint"], string> = {
+  blue: "from-[#123a8f] via-[#1a56c4] to-[#0a1f52]",
+  indigo: "from-[#3b1470] via-[#5b21b6] to-[#1c0a3d]",
+  emerald: "from-[#064e3b] via-[#059669] to-[#022c22]",
+  rose: "from-[#701a3a] via-[#be185d] to-[#3d0a20]",
+  amber: "from-[#713f12] via-[#d97706] to-[#3a2005]",
 };
 
 export default function HeroBanner({ slides }: HeroBannerProps) {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
   const touchStartX = useRef<number | null>(null);
+  const n = slides.length;
 
   useEffect(() => {
-    if (paused) return;
+    if (paused || n <= 1) return;
     const timer = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % slides.length);
-    }, 6500);
+      setCurrent((prev) => (prev + 1) % n);
+    }, 5500);
     return () => clearInterval(timer);
-  }, [paused, slides.length]);
+  }, [paused, n]);
 
-  const go = (idx: number) => setCurrent((idx + slides.length) % slides.length);
+  const go = (idx: number) => setCurrent(((idx % n) + n) % n);
+
+  // Normalize offset to [-n/2, n/2] for coverflow positioning
+  const offsetOf = (idx: number) => {
+    let o = (idx - current) % n;
+    if (o > n / 2) o -= n;
+    if (o < -n / 2) o += n;
+    return o;
+  };
 
   return (
     <div className="space-y-3">
-      {/* Main Banner Slider */}
+      {/* Coverflow Carousel */}
       <div
-        className="relative h-[240px] sm:h-[300px] lg:h-[340px] overflow-hidden rounded-xl border border-line bg-panel"
+        className="relative overflow-hidden"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
         onTouchStart={(e) => {
@@ -69,112 +70,103 @@ export default function HeroBanner({ slides }: HeroBannerProps) {
           go(current + (dx < 0 ? 1 : -1));
         }}
       >
-        {slides.map((slide, idx) => {
-          const active = idx === current;
-          const overlay = tintOverlay[slide.tint];
-          return (
-            <div
-              key={slide.id}
-              className={`absolute inset-0 transition-all duration-700 ${
-                active ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-              }`}
-              aria-hidden={!active}
-            >
-              {/* Artwork */}
-              <div className="absolute inset-0">
-                {slide.image ? (
-                  <img
-                    src={slide.image}
-                    alt={slide.title}
-                    className={`h-full w-full object-cover transition-transform duration-[2000ms] ${
-                      active ? "scale-100" : "scale-110"
-                    }`}
-                  />
-                ) : (
-                  <div className="h-full w-full bg-[radial-gradient(45rem_30rem_at_85%_-5%,rgba(34,211,238,0.22),transparent_55%),radial-gradient(32rem_26rem_at_5%_125%,rgba(245,158,11,0.14),transparent_55%),linear-gradient(135deg,#0b1121,#070b16)]">
-                    <div className="absolute right-6 top-1/2 -translate-y-1/2 select-none">
-                      <img src="/images/rxr.webp" alt="RXR" className="h-20 w-20 select-none rounded-2xl shadow-[0_8px_30px_-8px_rgba(59,130,246,0.6)]" />
+        <div className="relative mx-auto h-[220px] sm:h-[290px] lg:h-[320px] max-w-5xl [perspective:1200px]">
+          {slides.map((slide, idx) => {
+            const o = offsetOf(idx);
+            const abs = Math.abs(o);
+            const active = o === 0;
+            const visible = abs <= 2;
+            return (
+              <div
+                key={slide.id}
+                className="absolute inset-y-0 left-1/2 w-[86%] sm:w-[68%] transition-all duration-500 ease-out will-change-transform"
+                style={{
+                  transform: `translateX(-50%) translateX(${o * 62}%) scale(${active ? 1 : 0.86 - Math.min(abs - 1, 1) * 0.06})`,
+                  zIndex: 20 - abs,
+                  opacity: visible ? (active ? 1 : 0.55) : 0,
+                  pointerEvents: active ? "auto" : "none",
+                }}
+                aria-hidden={!active}
+              >
+                <Link
+                  href={slide.href}
+                  tabIndex={active ? 0 : -1}
+                  className={`relative flex h-full w-full flex-col justify-center gap-2 overflow-hidden rounded-2xl border border-white/15 bg-gradient-to-br p-6 text-left shadow-[0_20px_60px_-15px_rgba(0,0,0,0.7)] sm:gap-3 sm:p-10 ${tintCard[slide.tint]}`}
+                >
+                  {/* Decorative circles */}
+                  <div className="pointer-events-none absolute -right-16 -top-24 h-64 w-64 rounded-full bg-white/10" />
+                  <div className="pointer-events-none absolute -bottom-28 right-24 h-56 w-56 rounded-full bg-black/20" />
+                  {/* Icon */}
+                  <div className="flex items-center gap-3 sm:gap-4">
+                    <span className="text-4xl leading-none drop-shadow sm:text-6xl">
+                      ⚡
+                    </span>
+                    <div className="min-w-0">
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-cyan-300/50 bg-cyan-400/10 px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-[0.14em] text-cyan-200 sm:text-[10px]">
+                        <Zap className="h-3 w-3" />
+                        {slide.badge}
+                      </span>
+                      <h2 className="mt-1.5 truncate text-xl font-extrabold tracking-tight text-white drop-shadow sm:text-3xl">
+                        {slide.title}
+                      </h2>
                     </div>
                   </div>
-                )}
-                {/* Readability overlay */}
-                <div
-                  className={`absolute inset-0 bg-gradient-to-r ${overlay}`}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-canvas via-transparent to-black/30" />
-              </div>
-
-              {/* Content */}
-              <div className="relative z-10 flex h-full flex-col justify-between p-5 sm:p-8">
-                <div className="flex items-center gap-2">
-                  <span
-                    className={`rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shadow ${tintBadge[slide.tint]}`}
-                  >
-                    {slide.badge}
-                  </span>
-                  <span className="flex items-center gap-1 rounded bg-black/45 px-2 py-0.5 text-[11px] font-medium text-slate-100 backdrop-blur-sm border border-white/10">
-                    <Zap className="h-3 w-3 text-amber-300" />
-                    Proses Instan
-                  </span>
-                </div>
-
-                <div className="my-3 max-w-xl">
-                  <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-white drop-shadow-sm">
-                    {slide.title}
-                  </h2>
-                  <p className="mt-1.5 text-xs sm:text-sm text-slate-200/95 line-clamp-2 leading-relaxed">
+                  <p className="max-w-md text-[11px] leading-relaxed text-white/80 sm:text-sm line-clamp-2">
                     {slide.subtitle}
                   </p>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="flex flex-wrap items-center gap-3">
-                    <Link
-                      href={slide.href}
-                      className="btn-primary px-4 py-2 text-xs sm:text-sm"
-                    >
+                  {active && (
+                    <span className="mt-1 hidden w-fit items-center gap-2 text-xs font-semibold text-cyan-200 sm:inline-flex">
                       {slide.linkText} →
-                    </Link>
-                    <span className="rounded-lg bg-black/45 px-2.5 py-1 text-xs font-bold text-amber-300 backdrop-blur-sm border border-white/10">
-                      {slide.tag}
+                      <span className="rounded-md bg-black/30 px-2 py-0.5 text-[11px] font-bold text-amber-200">
+                        {slide.tag}
+                      </span>
                     </span>
-                  </div>
-
-                  <div className="flex items-center gap-1.5">
-                    {slides.map((s, idx) => (
-                      <button
-                        key={s.id}
-                        onClick={() => go(idx)}
-                        className={`h-1.5 rounded-full transition-all ${
-                          idx === current
-                            ? "w-5 bg-blue-400"
-                            : "w-1.5 bg-white/40 hover:bg-white/70"
-                        }`}
-                        aria-label={`Slide ${idx + 1}`}
-                      />
-                    ))}
-                  </div>
-                </div>
+                  )}
+                  {slide.image ? (
+                    <img
+                      src={slide.image}
+                      alt=""
+                      aria-hidden
+                      className="pointer-events-none absolute -right-6 top-1/2 hidden h-[130%] w-auto -translate-y-1/2 select-none object-contain opacity-40 [mask-image:linear-gradient(to_left,black_55%,transparent)] md:block"
+                    />
+                  ) : null}
+                </Link>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
 
         {/* Arrow Navigation */}
         <button
           onClick={() => go(current - 1)}
-          className="absolute left-2 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/40 p-1.5 text-slate-200 hover:bg-black/70 hover:text-white transition"
+          className="absolute left-1 top-1/2 z-30 -translate-y-1/2 rounded-full border border-white/20 bg-black/50 p-2 text-white backdrop-blur transition hover:bg-black/80 sm:left-3"
           aria-label="Slide sebelumnya"
         >
           <ChevronLeft className="h-4 w-4" />
         </button>
         <button
           onClick={() => go(current + 1)}
-          className="absolute right-2 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/40 p-1.5 text-slate-200 hover:bg-black/70 hover:text-white transition"
+          className="absolute right-1 top-1/2 z-30 -translate-y-1/2 rounded-full border border-white/20 bg-black/50 p-2 text-white backdrop-blur transition hover:bg-black/80 sm:right-3"
           aria-label="Slide berikutnya"
         >
           <ChevronRight className="h-4 w-4" />
         </button>
+
+        {/* Dots */}
+        <div className="mt-3 flex items-center justify-center gap-2">
+          {slides.map((s, idx) => (
+            <button
+              key={s.id}
+              onClick={() => go(idx)}
+              className={`h-1.5 rounded-full transition-all ${
+                idx === current
+                  ? "w-8 bg-violet-400"
+                  : "w-4 bg-white/25 hover:bg-white/50"
+              }`}
+              aria-label={`Slide ${idx + 1}`}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Ticker / Running Announcement */}

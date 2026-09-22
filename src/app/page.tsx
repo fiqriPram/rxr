@@ -44,7 +44,7 @@ export default async function HomePage() {
     "genshin-impact": "/images/banner/genshin-impact.png",
     "valorant": "/images/banner/valorant.png",
     "pubg-mobile": "/images/banner/pubgm.png",
-    "steam-wallet": "/images/banner/steam.png",
+    "steam-wallet": "/images/voucher/steam.png",
     "call-of-duty-mobile": "/images/banner/codm.png",
     "roblox": "/images/banner/roblox.png",
   };

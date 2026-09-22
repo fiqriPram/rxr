@@ -103,7 +103,6 @@ export const VIPAYMENT_GAME_NAMES: Record<string, string[]> = {
   "zepeto": ["Zepeto"],
   "garena-shell": ["Voucher Garena Shell"],
   "megaxus-voucher": ["Voucher Megaxus"],
-  "pb-zepetto-voucher": ["Voucher PB Zepetto"],
   "psn-voucher": ["Voucher PSN"],
   "razer-gold": ["Voucher Razer Gold"],
 };
